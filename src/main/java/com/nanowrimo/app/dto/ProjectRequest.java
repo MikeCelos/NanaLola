@@ -5,6 +5,7 @@ public class ProjectRequest {
     private String coverUrl;
     private String genre;
     private String series;
+    private String synopsis;
 
     public ProjectRequest() {
     }
@@ -39,5 +40,13 @@ public class ProjectRequest {
 
     public void setSeries(String series) {
         this.series = series;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
     }
 }

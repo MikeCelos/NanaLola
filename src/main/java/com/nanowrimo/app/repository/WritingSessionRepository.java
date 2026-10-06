@@ -23,4 +23,10 @@ public interface WritingSessionRepository extends JpaRepository<WritingSession, 
 
     @Query("SELECT COALESCE(SUM(s.wordsAdded), 0) FROM WritingSession s WHERE s.goal.id = :goalId")
     Long getTotalWordsByGoalId(@Param("goalId") Long goalId);
+
+    @Query("SELECT COALESCE(SUM(s.wordsAdded), 0) FROM WritingSession s WHERE s.goal.project.user.id = :userId")
+    Long getTotalWordsByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT s FROM WritingSession s WHERE s.goal.project.user.id = :userId")
+    List<WritingSession> findAllByUserId(@Param("userId") Long userId);
 }

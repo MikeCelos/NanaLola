@@ -49,11 +49,22 @@ public class GoalController {
                 project,
                 request.getTitle(),
                 request.getType(),
-                request.getTargetWords(),
+                request.getTargetUnit(),
+                request.getTargetCount(),
                 request.getStartDate(),
                 request.getEndDate()
         );
         return ResponseEntity.ok(goalRepository.save(goal));
+    }
+
+    @PutMapping("/{id}/archive")
+    public ResponseEntity<Goal> archiveGoal(@PathVariable Long id) {
+        return goalRepository.findById(id)
+                .map(g -> {
+                    g.setArchived(true);
+                    return ResponseEntity.ok(goalRepository.save(g));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

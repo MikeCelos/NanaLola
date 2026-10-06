@@ -137,7 +137,7 @@ function drawWaxSeal(ctx, x, y, words) {
   ctx.font = 'bold 13px "Times New Roman", serif';
   ctx.fillText('★ VENCEDOR ★', x, y - 18);
   ctx.font = 'bold 18px "SimSun", serif';
-  ctx.fillText('NaNoWriMo', x, y + 6);
+  ctx.fillText('NanaLola', x, y + 6);
   ctx.font = '12px "Times New Roman", serif';
   ctx.fillText(`${words} PALAVRAS`, x, y + 26);
 
@@ -148,7 +148,7 @@ function downloadDiploma() {
   const canvas = document.getElementById('diplomaCanvas');
   if (!canvas) return;
   const link = document.createElement('a');
-  link.download = 'Diploma_NaNoWriMo_Oficial.png';
+  link.download = 'Diploma_NanaLola_Oficial.png';
   link.href = canvas.toDataURL('image/png');
   link.click();
 }

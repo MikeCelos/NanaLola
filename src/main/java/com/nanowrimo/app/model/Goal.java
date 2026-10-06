@@ -25,8 +25,16 @@ public class Goal {
     @Column(nullable = false)
     private GoalType type = GoalType.WRITING;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private GoalUnit targetUnit = GoalUnit.WORDS;
+
     private Integer targetWords = 50000;
+
+    @Column(nullable = false)
+    private Integer targetCount = 50000;
+
+    private Integer currentUnitProgress = 0; // Ex: se for capítulos, indica em que capítulo vai
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -34,18 +42,24 @@ public class Goal {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    private boolean archived = false; // Metas antigas vs ativas
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Goal() {
     }
 
-    public Goal(Project project, String title, GoalType type, Integer targetWords, LocalDate startDate, LocalDate endDate) {
+    public Goal(Project project, String title, GoalType type, GoalUnit targetUnit, Integer targetCount, LocalDate startDate, LocalDate endDate) {
         this.project = project;
         this.title = title;
         this.type = type != null ? type : GoalType.WRITING;
-        this.targetWords = targetWords != null ? targetWords : 50000;
+        this.targetUnit = targetUnit != null ? targetUnit : GoalUnit.WORDS;
+        this.targetCount = targetCount != null ? targetCount : 50000;
+        this.targetWords = this.targetUnit == GoalUnit.WORDS ? this.targetCount : null;
+        this.currentUnitProgress = 0;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.archived = false;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -81,12 +95,36 @@ public class Goal {
         this.type = type;
     }
 
+    public GoalUnit getTargetUnit() {
+        return targetUnit;
+    }
+
+    public void setTargetUnit(GoalUnit targetUnit) {
+        this.targetUnit = targetUnit;
+    }
+
     public Integer getTargetWords() {
         return targetWords;
     }
 
     public void setTargetWords(Integer targetWords) {
         this.targetWords = targetWords;
+    }
+
+    public Integer getTargetCount() {
+        return targetCount;
+    }
+
+    public void setTargetCount(Integer targetCount) {
+        this.targetCount = targetCount;
+    }
+
+    public Integer getCurrentUnitProgress() {
+        return currentUnitProgress;
+    }
+
+    public void setCurrentUnitProgress(Integer currentUnitProgress) {
+        this.currentUnitProgress = currentUnitProgress;
     }
 
     public LocalDate getStartDate() {
@@ -103,6 +141,14 @@ public class Goal {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     public LocalDateTime getCreatedAt() {

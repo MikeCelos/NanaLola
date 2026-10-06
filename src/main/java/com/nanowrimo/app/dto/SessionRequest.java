@@ -6,7 +6,8 @@ import java.time.LocalTime;
 public class SessionRequest {
     private Long goalId;
     private Integer wordsAdded;
-    private Integer newTotalCount; // If the user chooses to update the grand total directly
+    private Integer newTotalCount; // Se optar por atualizar o total do livro
+    private Integer currentChapter; // Se for meta por capítulos
     private LocalDate sessionDate;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -37,6 +38,14 @@ public class SessionRequest {
 
     public void setNewTotalCount(Integer newTotalCount) {
         this.newTotalCount = newTotalCount;
+    }
+
+    public Integer getCurrentChapter() {
+        return currentChapter;
+    }
+
+    public void setCurrentChapter(Integer currentChapter) {
+        this.currentChapter = currentChapter;
     }
 
     public LocalDate getSessionDate() {

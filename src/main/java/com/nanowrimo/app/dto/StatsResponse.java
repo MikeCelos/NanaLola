@@ -15,6 +15,10 @@ public class StatsResponse {
     private Long goalId;
     private String goalTitle;
     private String goalType;
+    private String targetUnit = "WORDS";
+    private int targetCount = 50000;
+    private int currentUnitProgress = 0;
+    private boolean archived = false;
     private int targetWords;
     private int currentWords;
     private int remainingWords;
@@ -312,5 +316,37 @@ public class StatsResponse {
 
     public void setBadges(List<Badge> badges) {
         this.badges = badges;
+    }
+
+    public String getTargetUnit() {
+        return targetUnit;
+    }
+
+    public void setTargetUnit(String targetUnit) {
+        this.targetUnit = targetUnit;
+    }
+
+    public int getTargetCount() {
+        return targetCount;
+    }
+
+    public void setTargetCount(int targetCount) {
+        this.targetCount = targetCount;
+    }
+
+    public int getCurrentUnitProgress() {
+        return currentUnitProgress;
+    }
+
+    public void setCurrentUnitProgress(int currentUnitProgress) {
+        this.currentUnitProgress = currentUnitProgress;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }

@@ -38,12 +38,14 @@ public class WritingSessionService {
             Long currentTotal = writingSessionRepository.getTotalWordsByGoalId(goal.getId());
             long current = currentTotal != null ? currentTotal : 0L;
             wordsToAdd = (int) (request.getNewTotalCount() - current);
-            if (wordsToAdd < 0) {
-                // Se o utilizador diminuiu a contagem total, ajusta para o valor negativo ou zero
-                wordsToAdd = (int) (request.getNewTotalCount() - current);
-            }
         } else if (request.getWordsAdded() != null) {
             wordsToAdd = request.getWordsAdded();
+        }
+
+        // Se for uma meta por capítulos e tiver atualizado o capítulo
+        if (request.getCurrentChapter() != null && request.getCurrentChapter() > 0) {
+            goal.setCurrentUnitProgress(request.getCurrentChapter());
+            goalRepository.save(goal);
         }
 
         LocalDate sessionDate = request.getSessionDate() != null ? request.getSessionDate() : LocalDate.now();
@@ -52,6 +54,7 @@ public class WritingSessionService {
         WritingSession session = new WritingSession(
                 goal,
                 wordsToAdd,
+                request.getCurrentChapter(),
                 sessionDate,
                 startTime,
                 request.getEndTime(),

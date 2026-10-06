@@ -1,13 +1,15 @@
 package com.nanowrimo.app.dto;
 
 import com.nanowrimo.app.model.GoalType;
+import com.nanowrimo.app.model.GoalUnit;
 import java.time.LocalDate;
 
 public class GoalRequest {
     private Long projectId;
     private String title;
     private GoalType type = GoalType.WRITING;
-    private Integer targetWords = 50000;
+    private GoalUnit targetUnit = GoalUnit.WORDS;
+    private Integer targetCount = 50000;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -38,12 +40,20 @@ public class GoalRequest {
         this.type = type;
     }
 
-    public Integer getTargetWords() {
-        return targetWords;
+    public GoalUnit getTargetUnit() {
+        return targetUnit;
     }
 
-    public void setTargetWords(Integer targetWords) {
-        this.targetWords = targetWords;
+    public void setTargetUnit(GoalUnit targetUnit) {
+        this.targetUnit = targetUnit;
+    }
+
+    public Integer getTargetCount() {
+        return targetCount;
+    }
+
+    public void setTargetCount(Integer targetCount) {
+        this.targetCount = targetCount;
     }
 
     public LocalDate getStartDate() {

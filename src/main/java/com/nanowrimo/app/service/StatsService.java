@@ -3,6 +3,7 @@ package com.nanowrimo.app.service;
 import com.nanowrimo.app.dto.DailyStatDto;
 import com.nanowrimo.app.dto.StatsResponse;
 import com.nanowrimo.app.model.Goal;
+import com.nanowrimo.app.model.GoalUnit;
 import com.nanowrimo.app.model.WritingSession;
 import com.nanowrimo.app.repository.GoalRepository;
 import com.nanowrimo.app.repository.WritingSessionRepository;
@@ -26,8 +27,8 @@ public class StatsService {
             "\"A primeira versão de qualquer coisa é sempre um rascunho de coragem.\" — Ernest Hemingway",
             "\"Escreve bêbado, edita sóbrio.\" — Peter De Vries",
             "\"Uma palavra após outra é poder.\" — Margaret Atwood",
-            "\"O café transforma imaginação em prosa.\" — Provérbio de Escritor",
-            "\"Cada frase escrita hoje aproxima o teu livro do mundo.\" — Vibe Cozy"
+            "\"O café transforma imaginação em prosa.\" — NanaLola Cozy",
+            "\"Cada frase escrita hoje aproxima o teu livro do mundo.\" — NanaLola"
     );
 
     public StatsService(GoalRepository goalRepository,
@@ -55,7 +56,11 @@ public class StatsService {
         res.setGoalId(goal.getId());
         res.setGoalTitle(goal.getTitle());
         res.setGoalType(goal.getType().name());
-        res.setTargetWords(goal.getTargetWords());
+        res.setTargetUnit(goal.getTargetUnit() != null ? goal.getTargetUnit().name() : "WORDS");
+        res.setTargetCount(goal.getTargetCount() != null ? goal.getTargetCount() : 50000);
+        res.setCurrentUnitProgress(goal.getCurrentUnitProgress() != null ? goal.getCurrentUnitProgress() : 0);
+        res.setArchived(goal.isArchived());
+        res.setTargetWords(goal.getTargetWords() != null ? goal.getTargetWords() : 0);
         res.setTotalWordsApp(totalAppWords != null ? totalAppWords : 0);
 
         LocalDate startDate = goal.getStartDate();
@@ -68,9 +73,6 @@ public class StatsService {
         long totalDaysLong = ChronoUnit.DAYS.between(startDate, endDate) + 1;
         int totalDays = (int) Math.max(1, totalDaysLong);
         res.setTotalDays(totalDays);
-
-        int originalDailyGoal = (int) Math.ceil((double) goal.getTargetWords() / totalDays);
-        res.setOriginalDailyGoal(originalDailyGoal);
 
         // Agrupar palavras por data
         Map<LocalDate, Integer> dailyWordMap = new LinkedHashMap<>();
@@ -94,12 +96,6 @@ public class StatsService {
         }
 
         res.setCurrentWords(currentWords);
-        int remainingWords = Math.max(0, goal.getTargetWords() - currentWords);
-        res.setRemainingWords(remainingWords);
-
-        double progress = goal.getTargetWords() > 0 ? ((double) currentWords / goal.getTargetWords()) * 100.0 : 0.0;
-        res.setProgressPercentage(Math.round(progress * 10.0) / 10.0);
-        res.setCompleted(currentWords >= goal.getTargetWords());
 
         // Dias passados e restantes
         long daysElapsed = 1;
@@ -122,15 +118,7 @@ public class StatsService {
         }
         res.setDaysRemaining((int) daysRemaining);
 
-        // Média diária restante
-        int remainingDailyGoal = 0;
-        if (remainingWords > 0) {
-            long daysToCount = Math.max(1, daysRemaining);
-            remainingDailyGoal = (int) Math.ceil((double) remainingWords / daysToCount);
-        }
-        res.setRemainingDailyGoal(remainingDailyGoal);
-
-        // Média diária atingida
+        // Média diária atingida em palavras (calculada para todos os tipos de meta)
         int currentDailyAverage = 0;
         long activeDays = Math.max(1, daysElapsed);
         if (currentWords > 0) {
@@ -138,14 +126,47 @@ public class StatsService {
         }
         res.setCurrentDailyAverage(currentDailyAverage);
 
-        // Estimativa de data de fim
-        if (remainingWords <= 0) {
-            res.setEstimatedCompletionDate(today);
-        } else if (currentDailyAverage > 0) {
-            long daysNeeded = (long) Math.ceil((double) remainingWords / currentDailyAverage);
-            res.setEstimatedCompletionDate(today.plusDays(daysNeeded));
-        } else {
+        boolean isChapters = goal.getTargetUnit() == GoalUnit.CHAPTERS;
+
+        if (isChapters) {
+            // META POR CAPÍTULOS / SEM LIMITE DE PALAVRAS
+            int targetChapters = goal.getTargetCount() > 0 ? goal.getTargetCount() : 1;
+            int curChapters = goal.getCurrentUnitProgress() != null ? goal.getCurrentUnitProgress() : 0;
+            double progress = ((double) curChapters / targetChapters) * 100.0;
+            res.setProgressPercentage(Math.min(100.0, Math.round(progress * 10.0) / 10.0));
+            res.setCompleted(curChapters >= targetChapters);
+            res.setRemainingWords(0);
+            res.setOriginalDailyGoal(0);
+            res.setRemainingDailyGoal(0);
             res.setEstimatedCompletionDate(null);
+        } else {
+            // META POR PALAVRAS (TRADICIONAL NANOWRIMO)
+            int targetW = goal.getTargetWords() != null ? goal.getTargetWords() : 50000;
+            int remainingWords = Math.max(0, targetW - currentWords);
+            res.setRemainingWords(remainingWords);
+
+            int originalDailyGoal = (int) Math.ceil((double) targetW / totalDays);
+            res.setOriginalDailyGoal(originalDailyGoal);
+
+            int remainingDailyGoal = 0;
+            if (remainingWords > 0) {
+                long daysToCount = Math.max(1, daysRemaining);
+                remainingDailyGoal = (int) Math.ceil((double) remainingWords / daysToCount);
+            }
+            res.setRemainingDailyGoal(remainingDailyGoal);
+
+            double progress = targetW > 0 ? ((double) currentWords / targetW) * 100.0 : 0.0;
+            res.setProgressPercentage(Math.min(100.0, Math.round(progress * 10.0) / 10.0));
+            res.setCompleted(currentWords >= targetW);
+
+            if (remainingWords <= 0) {
+                res.setEstimatedCompletionDate(today);
+            } else if (currentDailyAverage > 0) {
+                long daysNeeded = (long) Math.ceil((double) remainingWords / currentDailyAverage);
+                res.setEstimatedCompletionDate(today.plusDays(daysNeeded));
+            } else {
+                res.setEstimatedCompletionDate(null);
+            }
         }
 
         res.setBestDayWords(bestDayWords);
@@ -168,7 +189,7 @@ public class StatsService {
         }
         res.setStreakDays(streak);
 
-        // Gerar estatísticas diárias para o gráfico (da startDate à endDate)
+        // Gerar estatísticas diárias para o gráfico
         List<DailyStatDto> dailyStats = new ArrayList<>();
         int runningCumulative = 0;
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM");
@@ -181,7 +202,7 @@ public class StatsService {
                 runningCumulative += dayWords;
             }
 
-            int expectedCumulative = Math.min(goal.getTargetWords(), (int) Math.round(originalDailyGoal * dayIndex));
+            int expCumulative = isChapters ? 0 : Math.min(res.getTargetWords(), (int) Math.round(res.getOriginalDailyGoal() * dayIndex));
             boolean isRecord = (dayWords > 0 && dayWords == bestDayWords);
 
             DailyStatDto stat = new DailyStatDto(
@@ -190,8 +211,8 @@ public class StatsService {
                     dayIndex,
                     cur.isAfter(today) && dayWords == 0 ? 0 : dayWords,
                     cur.isAfter(today) && dayWords == 0 ? 0 : runningCumulative,
-                    expectedCumulative,
-                    originalDailyGoal,
+                    expCumulative,
+                    res.getOriginalDailyGoal(),
                     isRecord
             );
             dailyStats.add(stat);
@@ -202,22 +223,38 @@ public class StatsService {
         res.setDailyStats(dailyStats);
 
         // Avaliar humor e mensagem motivacional
-        int expectedToday = Math.min(goal.getTargetWords(), (int) Math.round(originalDailyGoal * Math.max(1, daysElapsed)));
-        if (currentWords >= expectedToday) {
-            res.setMoodStatus("HAPPY");
-            res.setMoodEmoji("😊✨");
-            res.setMoodMessage("Ritmo incrível! Estás acima da meta diária esperada. O teu livro está a voar!");
-        } else if (currentWords >= expectedToday * 0.75) {
-            res.setMoodStatus("NORMAL");
-            res.setMoodEmoji("☕📖");
-            res.setMoodMessage("Bom progresso! Pega numa chávena de café e escreve mais algumas linhas.");
+        if (isChapters) {
+            if (res.isCompleted()) {
+                res.setMoodStatus("HAPPY");
+                res.setMoodEmoji("🏆✨");
+                res.setMoodMessage("Todos os capítulos concluídos! Parabéns pela tua obra literária!");
+            } else if (res.getCurrentUnitProgress() > 0) {
+                res.setMoodStatus("NORMAL");
+                res.setMoodEmoji("📖☕");
+                res.setMoodMessage("Mais um capítulo ganha vida! Continua a mergulhar na tua história.");
+            } else {
+                res.setMoodStatus("ENCOURAGING");
+                res.setMoodEmoji("🌱☕");
+                res.setMoodMessage("Hora de abrir o primeiro capítulo. Pega num café e solta as ideias!");
+            }
         } else {
-            res.setMoodStatus("ENCOURAGING");
-            res.setMoodEmoji("🌱☕");
-            res.setMoodMessage("Não desanimes! Cada palavra conta e ainda há tempo de recuperar. Respira fundo e continua.");
+            int expectedToday = Math.min(res.getTargetWords(), (int) Math.round(res.getOriginalDailyGoal() * Math.max(1, daysElapsed)));
+            if (currentWords >= expectedToday) {
+                res.setMoodStatus("HAPPY");
+                res.setMoodEmoji("😊✨");
+                res.setMoodMessage("Ritmo incrível! Estás acima da meta diária esperada. O teu livro está a voar!");
+            } else if (currentWords >= expectedToday * 0.75) {
+                res.setMoodStatus("NORMAL");
+                res.setMoodEmoji("☕📖");
+                res.setMoodMessage("Bom progresso! Pega numa chávena de café e escreve mais algumas linhas.");
+            } else {
+                res.setMoodStatus("ENCOURAGING");
+                res.setMoodEmoji("🌱☕");
+                res.setMoodMessage("Não desanimes! Cada palavra conta e ainda há tempo de recuperar. Respira fundo e continua.");
+            }
         }
 
-        // Quote aleatória
+        // Quote
         int quoteIdx = Math.abs((int) (goal.getId() + daysElapsed)) % MOTIVATIONAL_QUOTES.size();
         res.setMotivationalQuote(MOTIVATIONAL_QUOTES.get(quoteIdx));
 

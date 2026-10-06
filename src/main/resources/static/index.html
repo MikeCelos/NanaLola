@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NaNoWriMo Cozy & Vintage Tracker</title>
+  <title>NanaLola ☕ Espaço Cozy de Escrita</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#7A3F33">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="NaNoWriMo">
+  <meta name="apple-mobile-web-app-title" content="NanaLola">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
 
   <!-- Estilos da Aplicação -->
@@ -21,204 +21,379 @@
 </head>
 <body>
 
-  <div class="app-container">
-    
-    <!-- Barra Superior Global -->
-    <header class="top-bar">
-      <div class="global-counter">
-        <span class="coffee-icon">☕</span>
-        <span>Total de Palavras na App: <strong id="globalWordCounter">0</strong></span>
+  <!-- ==========================================================================
+       ECRÃ DE AUTENTICAÇÃO (LOGIN / REGISTO)
+       ========================================================================== -->
+  <div id="viewAuth" class="view-section" style="display: none;">
+    <div class="auth-container-box">
+      <div style="font-size: 3rem; margin-bottom: 8px;">☕</div>
+      <h1 style="font-family: var(--font-heading); color: var(--color-espresso); font-size: 2.2rem; margin-bottom: 4px;">NanaLola</h1>
+      <p style="color: var(--color-cinnamon); font-style: italic; margin-bottom: 24px;">O teu refúgio acolhedor de escrita & NaNoWriMo</p>
+
+      <div class="auth-tabs">
+        <button id="tabBtnLogin" class="auth-tab-btn active" onclick="switchAuthTab('LOGIN')">Entrar</button>
+        <button id="tabBtnRegister" class="auth-tab-btn" onclick="switchAuthTab('REGISTER')">Criar Conta</button>
       </div>
-      <div class="top-actions">
-        <button id="btnInstallApp" class="btn-vintage btn-icon-pwa" style="display: none;">
-          📲 Instalar App
+
+      <!-- Formulário de Login -->
+      <form id="formLogin">
+        <div class="form-group" style="text-align: left;">
+          <label for="loginUser">Nome de Utilizador ou Email:</label>
+          <input type="text" id="loginUser" class="form-input" placeholder="Ex: ana" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label for="loginPass">Palavra-passe:</label>
+          <input type="password" id="loginPass" class="form-input" placeholder="••••••••" required>
+        </div>
+        <div id="loginErrorMsg" style="color: var(--color-terracotta); font-size: 0.9rem; margin-bottom: 12px; display: none;"></div>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Entrar no Meu Refúgio ☕
         </button>
-        <button id="btnNewProject" class="btn-vintage btn-secondary">
-          + Novo Livro
+      </form>
+
+      <!-- Formulário de Registo -->
+      <form id="formRegister" style="display: none;">
+        <div class="form-group" style="text-align: left;">
+          <label for="regName">Nome de Escritor(a):</label>
+          <input type="text" id="regName" class="form-input" placeholder="Ex: Ana Silva" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label for="regUsername">Nome de Utilizador (login):</label>
+          <input type="text" id="regUsername" class="form-input" placeholder="Ex: anawriter" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label for="regEmail">Email:</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="ana@exemplo.com" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label for="regPass">Palavra-passe:</label>
+          <input type="password" id="regPass" class="form-input" placeholder="Pelo menos 4 caracteres" required>
+        </div>
+        <div id="registerErrorMsg" style="color: var(--color-terracotta); font-size: 0.9rem; margin-bottom: 12px; display: none;"></div>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Criar o Meu Espaço de Autor 📖
         </button>
-        <button id="btnNewGoal" class="btn-vintage btn-secondary">
-          + Nova Meta
-        </button>
-        <button id="btnNewSession" class="btn-vintage btn-primary">
-          ✍️ Nova Sessão de Escrita
-        </button>
-      </div>
-    </header>
-
-    <!-- Cabeçalho Hero com Café Fumegante Cozy & Vintage -->
-    <section class="hero-cozy">
-      <div class="hero-content">
-        <div class="app-title-group">
-          <h1 class="app-main-title" id="currentProjectTitle">O Meu Romance</h1>
-          <span class="chart-badge" id="currentGoalBadge">Desafio NaNoWriMo</span>
-        </div>
-        <p class="app-subtitle" id="currentProjectMeta">Saga Literária • Ficção</p>
-        
-        <!-- Barra de Seleção Rápida de Projetos e Metas -->
-        <div class="selectors-bar" style="margin-bottom: 0;">
-          <div class="selector-card">
-            <div class="selector-header">
-              <h3>📖 Livro Selecionado</h3>
-            </div>
-            <select id="projectSelect" class="select-vintage"></select>
-          </div>
-          <div class="selector-card">
-            <div class="selector-header">
-              <h3>🎯 Meta Ativa</h3>
-            </div>
-            <select id="goalSelect" class="select-vintage"></select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Café Animado com Vapor -->
-      <div class="coffee-cup-container">
-        <div class="coffee-steam-art">
-          <div class="steam-cloud steam-1"></div>
-          <div class="steam-cloud steam-2"></div>
-          <div class="steam-cloud steam-3"></div>
-          <div class="cup-body"></div>
-          <div class="cup-handle"></div>
-          <div class="cup-saucer"></div>
-        </div>
-        <span class="coffee-tagline">Escreve & Desfruta ☕</span>
-      </div>
-    </section>
-
-    <!-- Painel de Humor e Frase Motivacional -->
-    <section class="mood-banner">
-      <div class="mood-info">
-        <div class="mood-emoji-large" id="moodEmoji">☕📖</div>
-        <div class="mood-texts">
-          <h4 id="moodTitle">Ritmo Confortável</h4>
-          <p id="moodText">Pega numa chávena de café e escreve mais algumas linhas.</p>
-        </div>
-      </div>
-      <div class="mood-quote" id="moodQuote">
-        "Não podes editar uma página em branco." — Jodi Picoult
-      </div>
-    </section>
-
-    <!-- Caixa de Celebração de Meta Batida (Mega Festa + Diploma) -->
-    <section id="celebrationBox" class="celebration-box">
-      <h2 class="celebration-title">🎉 META CONQUISTADA! PARABÉNS! 🏆</h2>
-      <p class="celebration-subtitle">Atingiste com distinção o objetivo do teu manuscrito!</p>
-      <button id="btnOpenDiploma" class="btn-vintage btn-primary" style="font-size: 1.15rem; padding: 12px 26px;">
-        🎓 Ver e Descarregar o Teu Diploma Oficial
-      </button>
-    </section>
-
-    <!-- Barra de Progresso Vintage -->
-    <section class="progress-section">
-      <div class="progress-header">
-        <h3>Progresso do Manuscrito</h3>
-        <span id="progressText">0% concluído</span>
-      </div>
-      <div class="progress-bar-vintage">
-        <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
-      </div>
-    </section>
-
-    <!-- Grelha de Métricas & Médias -->
-    <section class="metrics-grid">
-      <div class="metric-card highlight">
-        <div class="metric-title">Palavras no Livro</div>
-        <div class="metric-value accent" id="metricCurrentWords">0</div>
-        <div class="metric-sub" id="metricTargetWords">/ 50.000</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Média Diária Restante</div>
-        <div class="metric-value" id="metricRemainingDaily">1.667</div>
-        <div class="metric-sub" id="metricOriginalDaily">Meta original: 1.667 / dia</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Média Diária Real</div>
-        <div class="metric-value" id="metricActualDaily">0</div>
-        <div class="metric-sub">Baseada no teu ritmo atual</div>
-      </div>
-
-      <div class="metric-card">
-        <span id="recordBadge" class="record-badge" style="display: none;">NOVO RECORDE! 🏆</span>
-        <div class="metric-title">Melhor Dia</div>
-        <div class="metric-value" id="metricBestDay">0</div>
-        <div class="metric-sub">Máximo de palavras num só dia</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Previsão de Conclusão</div>
-        <div class="metric-value" style="font-size: 1.45rem;" id="metricEstDate">30 Nov</div>
-        <div class="metric-sub" id="metricEstSub">Ritmo projetado</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Sequência de Escrita</div>
-        <div class="metric-value" id="metricStreak">0 dias</div>
-        <div class="metric-sub">Dias seguidos a escrever 🔥</div>
-      </div>
-    </section>
-
-    <!-- Secção dos Gráficos Interativos -->
-    <section class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <h3>Progresso Acumulado Diário vs Esperado</h3>
-          <span class="chart-badge">Total Acumulado</span>
-        </div>
-        <div class="chart-wrapper">
-          <canvas id="cumulativeChart"></canvas>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <h3>Palavras Escritas por Dia</h3>
-          <span class="chart-badge">Sessões Diárias</span>
-        </div>
-        <div class="chart-wrapper">
-          <canvas id="dailyChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- Vitrina de Medalhas / Badges -->
-    <section class="badges-section">
-      <div class="badges-header">
-        <h2>Medalhas & Conquistas de Escrita</h2>
-        <span class="chart-badge">Galeria Vintage</span>
-      </div>
-      <div class="badges-grid" id="badgesGrid"></div>
-    </section>
-
-    <!-- Histórico de Sessões Recentes -->
-    <section class="history-section">
-      <div class="history-header">
-        <h2>Sessões Recentes de Escrita</h2>
-      </div>
-      <div style="overflow-x: auto;">
-        <table class="table-vintage">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Horário</th>
-              <th>Palavras</th>
-              <th>Notas da Sessão</th>
-              <th style="text-align: right;">Ações</th>
-            </tr>
-          </thead>
-          <tbody id="sessionsTableBody">
-            <tr>
-              <td colspan="5" style="text-align: center; color: var(--color-taupe); padding: 20px;">
-                A carregar sessões...
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
+      </form>
+    </div>
   </div>
+
+  <!-- ==========================================================================
+       APLICAÇÃO PRINCIPAL AUTENTICADA
+       ========================================================================== -->
+  <div id="mainAppWrapper" style="display: none;">
+    <div class="app-container">
+
+      <!-- Barra de Navegação NanaLola -->
+      <nav class="nanalola-navbar">
+        <div class="brand-group" onclick="navigateTo('HOME')">
+          <span class="brand-logo">☕</span>
+          <span class="brand-name">NanaLola</span>
+          <span class="brand-tag">Cozy Writing</span>
+        </div>
+
+        <div class="nav-links">
+          <button id="navBtnHome" class="nav-btn active" onclick="navigateTo('HOME')">
+            🏠 Página Inicial
+          </button>
+          <button id="navBtnLibrary" class="nav-btn" onclick="navigateTo('LIBRARY')">
+            📚 Biblioteca
+          </button>
+          <button id="navBtnProfile" class="nav-btn" onclick="navigateTo('PROFILE')">
+            👤 Perfil
+          </button>
+        </div>
+
+        <div class="nav-actions">
+          <button id="btnNavbarNewProject" class="btn-vintage btn-primary" onclick="openModal('modalProject')">
+            + Novo Projeto
+          </button>
+          <button id="btnInstallApp" class="btn-vintage btn-secondary" style="display: none;">
+            📲 Instalar App
+          </button>
+          <button class="btn-vintage btn-outline" onclick="handleLogout()" title="Terminar sessão">
+            Sair 🚪
+          </button>
+        </div>
+      </nav>
+
+      <!-- ==========================================================================
+           VISTA 1: PÁGINA INICIAL (Dashboard de Projetos Ativos)
+           ========================================================================== -->
+      <section id="viewHome" class="view-section active">
+        <!-- Hero Cozy com Café Fumegante -->
+        <div class="hero-cozy">
+          <div class="hero-content">
+            <h1 class="app-main-title" id="homeGreetingTitle">Bem-vinda ao NanaLola!</h1>
+            <p class="app-subtitle" id="homeGreetingSubtitle">Pega numa chávena de café quentinho e vamos dar vida às tuas histórias. ☕</p>
+            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">
+                📖 Começar Novo Livro
+              </button>
+              <button class="btn-vintage btn-secondary" onclick="navigateTo('LIBRARY')">
+                📚 Ver Biblioteca Completa
+              </button>
+            </div>
+          </div>
+
+          <!-- Chávena com Vapor Animado -->
+          <div class="coffee-cup-container">
+            <div class="coffee-steam-art">
+              <div class="steam-cloud steam-1"></div>
+              <div class="steam-cloud steam-2"></div>
+              <div class="steam-cloud steam-3"></div>
+              <div class="cup-body"></div>
+              <div class="cup-handle"></div>
+              <div class="cup-saucer"></div>
+            </div>
+            <span class="coffee-tagline">Escreve & Desfruta ☕</span>
+          </div>
+        </div>
+
+        <!-- Projetos Ativos em Andamento -->
+        <div class="section-title-bar">
+          <h2>Projetos Ativos & Metas</h2>
+          <span style="color: var(--color-cinnamon); font-style: italic;" id="activeProjectsCountLabel">0 livros em escrita</span>
+        </div>
+
+        <div id="activeProjectsContainer" class="active-projects-grid">
+          <!-- Gerado dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VISTA 2: BIBLIOTECA (Agrupada por Séries & Histórico de Metas Antigas)
+           ========================================================================== -->
+      <section id="viewLibrary" class="view-section">
+        <div class="section-title-bar">
+          <h2>A Tua Biblioteca Literária</h2>
+          <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">
+            + Adicionar Livro à Biblioteca
+          </button>
+        </div>
+        <p style="color: var(--color-cinnamon); font-style: italic; margin-bottom: 22px;">
+          Todos os teus livros organizados por séries. Clica num projeto para ver os detalhes e explorar metas antigas e passadas!
+        </p>
+
+        <div id="libraryContainer">
+          <!-- Grupos de séries e livros autónomos gerados dinamicamente via JS -->
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VISTA 3: PERFIL DO ESCRITOR
+           ========================================================================== -->
+      <section id="viewProfile" class="view-section">
+        <!-- Cartão de Apresentação do Autor -->
+        <div class="profile-card-hero">
+          <div class="profile-avatar-wrapper">
+            <img id="profileAvatarImg" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✍️</text></svg>" alt="Avatar do Escritor" class="profile-avatar-img">
+          </div>
+          <div class="profile-info">
+            <h2 id="profileDisplayName">Nome do Autor</h2>
+            <div class="profile-username" id="profileUsername">@autor</div>
+            <p class="profile-bio" id="profileBio">A escrever histórias cativantes com café e imaginação...</p>
+            <button class="btn-vintage btn-secondary" onclick="openEditProfileModal()">
+              ✏️ Editar Perfil & Foto
+            </button>
+          </div>
+        </div>
+
+        <!-- Os 4 Grandes Indicadores Solicitados -->
+        <div class="section-title-bar">
+          <h2>Estatísticas Gerais de Carreira</h2>
+        </div>
+        <div class="profile-stats-grid">
+          <div class="profile-stat-box">
+            <div class="stat-icon">📜</div>
+            <div class="stat-val" id="profileTotalWords">0</div>
+            <div class="stat-lbl">Nº Total de Palavras Escritas</div>
+          </div>
+
+          <div class="profile-stat-box">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-val" id="profileBestRecord">0</div>
+            <div class="stat-lbl">Recorde Diário de Sempre</div>
+          </div>
+
+          <div class="profile-stat-box">
+            <div class="stat-icon">📚</div>
+            <div class="stat-val" id="profileTotalProjects">0</div>
+            <div class="stat-lbl">Nº de Livros Criados</div>
+          </div>
+
+          <div class="profile-stat-box">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-val" id="profileCompletedGoals">0</div>
+            <div class="stat-lbl">Metas Completadas com Distinção</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VISTA 4: PAINEL DA META / ESTATÍSTICAS DETALHADAS (Quando clica num livro)
+           ========================================================================== -->
+      <section id="viewGoalDetails" class="view-section">
+        <div style="margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <button class="btn-vintage btn-secondary" onclick="navigateTo('HOME')">
+            ← Voltar aos Projetos
+          </button>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-vintage btn-secondary" id="btnArchiveCurrentGoal">
+              📦 Arquivar Meta
+            </button>
+            <button class="btn-vintage btn-primary" onclick="openSessionModalForActiveGoal()">
+              ✍️ Registar Sessão de Escrita
+            </button>
+          </div>
+        </div>
+
+        <!-- Cabeçalho do Livro / Meta -->
+        <div class="hero-cozy" style="margin-bottom: 20px;">
+          <div class="hero-content">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+              <h1 class="app-main-title" id="goalDetailBookTitle">Título do Livro</h1>
+              <span class="chart-badge" id="goalDetailBadge">Meta NaNoWriMo</span>
+            </div>
+            <p class="app-subtitle" id="goalDetailMeta">Série • Género</p>
+          </div>
+          <div class="coffee-cup-container">
+            <div style="font-size: 2.8rem; line-height: 1;">📖</div>
+          </div>
+        </div>
+
+        <!-- Painel de Humor & Quote -->
+        <div class="mood-banner">
+          <div class="mood-info">
+            <div class="mood-emoji-large" id="moodEmoji">☕📖</div>
+            <div class="mood-texts">
+              <h4 id="moodTitle">Ritmo Confortável</h4>
+              <p id="moodText">Pega numa chávena de café e escreve mais algumas linhas.</p>
+            </div>
+          </div>
+          <div class="mood-quote" id="moodQuote">
+            "Não podes editar uma página em branco." — Jodi Picoult
+          </div>
+        </div>
+
+        <!-- Celebração e Diploma -->
+        <div id="celebrationBox" class="celebration-box">
+          <h2 style="font-size: 2rem; color: var(--color-terracotta); margin-bottom: 8px;">🎉 META CONQUISTADA! PARABÉNS! 🏆</h2>
+          <p style="font-size: 1.15rem; margin-bottom: 18px; color: #55443F;">Conseguiste atingir o objetivo com sucesso!</p>
+          <button id="btnOpenDiploma" class="btn-vintage btn-primary" style="font-size: 1.1rem; padding: 12px 26px;">
+            🎓 Ver e Descarregar o Teu Diploma Oficial NanaLola
+          </button>
+        </div>
+
+        <!-- Barra de Progresso Vintage -->
+        <div class="section-title-bar" style="margin-bottom: 12px;">
+          <h3 id="progressSectionTitle">Progresso do Manuscrito</h3>
+          <span id="progressText" style="color: var(--color-terracotta); font-weight: bold;">0%</span>
+        </div>
+        <div class="progress-bar-vintage" style="margin-bottom: 24px; height: 20px;">
+          <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+
+        <!-- Grelha de Métricas -->
+        <div class="metrics-grid">
+          <div class="metric-card highlight">
+            <div class="metric-title" id="metricMainLabel">Palavras Escritas</div>
+            <div class="metric-value accent" id="metricCurrentWords">0</div>
+            <div class="metric-sub" id="metricTargetWords">/ 50.000</div>
+          </div>
+
+          <div class="metric-card" id="cardRemainingDaily">
+            <div class="metric-title">Média Diária Restante</div>
+            <div class="metric-value" id="metricRemainingDaily">0</div>
+            <div class="metric-sub" id="metricOriginalDaily">Meta adaptativa</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Média Diária Real</div>
+            <div class="metric-value" id="metricActualDaily">0</div>
+            <div class="metric-sub">Baseada no teu ritmo atual</div>
+          </div>
+
+          <div class="metric-card">
+            <span id="recordBadge" class="record-badge" style="display: none;">RECORDE! 🏆</span>
+            <div class="metric-title">Melhor Dia</div>
+            <div class="metric-value" id="metricBestDay">0</div>
+            <div class="metric-sub">Máximo num só dia</div>
+          </div>
+
+          <div class="metric-card" id="cardEstDate">
+            <div class="metric-title">Previsão de Conclusão</div>
+            <div class="metric-value" style="font-size: 1.45rem;" id="metricEstDate">30 Nov</div>
+            <div class="metric-sub" id="metricEstSub">Ritmo projetado</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Sequência de Escrita</div>
+            <div class="metric-value" id="metricStreak">0 dias</div>
+            <div class="metric-sub">Dias seguidos a escrever 🔥</div>
+          </div>
+        </div>
+
+        <!-- Gráficos Interativos -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Progresso Acumulado Diário vs Esperado</h3>
+              <span class="chart-badge">Total Acumulado</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="cumulativeChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Palavras Escritas por Dia</h3>
+              <span class="chart-badge">Sessões Diárias</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="dailyChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vitrina de Medalhas -->
+        <div class="badges-section">
+          <div class="badges-header">
+            <h2>Medalhas & Conquistas Deste Desafio</h2>
+            <span class="chart-badge">Galeria NanaLola</span>
+          </div>
+          <div class="badges-grid" id="badgesGrid"></div>
+        </div>
+
+        <!-- Histórico de Sessões da Meta -->
+        <div class="section-title-bar">
+          <h3>Histórico de Sessões de Escrita</h3>
+        </div>
+        <div style="background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; overflow-x: auto;">
+          <table class="table-vintage">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Palavras</th>
+                <th>Capítulo</th>
+                <th>Notas da Sessão</th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="sessionsTableBody">
+              <tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--color-taupe);">A carregar sessões...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAIS
+       ========================================================================== -->
 
   <!-- MODAL: REGISTAR SESSÃO DE ESCRITA -->
   <div id="modalSession" class="modal-overlay">
@@ -228,18 +403,20 @@
         <button class="btn-close-modal">&times;</button>
       </div>
       <form id="formSession">
+        <input type="hidden" id="sessionGoalId">
+
         <div class="form-group">
           <label>Como queres inserir as tuas palavras?</label>
           <div class="radio-cards-group">
             <label id="cardTypeDelta" class="radio-card active">
               <input type="radio" name="sessionType" id="radioTypeDelta" value="DELTA" checked>
               <span>+ Palavras Desta Sessão</span>
-              <small style="color:var(--color-taupe); font-size:0.75rem;">Ex: escrevi 800 palavras agora</small>
+              <small style="color:var(--color-taupe); font-size:0.75rem;">Ex: escrevi 800 palavras</small>
             </label>
             <label id="cardTypeTotal" class="radio-card">
               <input type="radio" name="sessionType" id="radioTypeTotal" value="TOTAL">
-              <span>Atualizar Contagem Total</span>
-              <small style="color:var(--color-taupe); font-size:0.75rem;">Calcula a diferença automaticamente</small>
+              <span>Atualizar Total do Livro</span>
+              <small style="color:var(--color-taupe); font-size:0.75rem;">Calcula a diferença automática</small>
             </label>
           </div>
         </div>
@@ -252,37 +429,34 @@
         <div id="groupTotalWords" class="form-group" style="display: none;">
           <label for="sessionTotalCount">Nova contagem total do livro:</label>
           <input type="number" id="sessionTotalCount" class="form-input" placeholder="Ex: 15400" min="0">
-          <p class="form-help">A app calcula automaticamente quantas palavras foram escritas nesta sessão.</p>
+        </div>
+
+        <!-- Se for meta por capítulos -->
+        <div id="groupChapterNumber" class="form-group">
+          <label for="sessionCurrentChapter">Em que capítulo estás agora? (Opcional):</label>
+          <input type="number" id="sessionCurrentChapter" class="form-input" placeholder="Ex: Capítulo 14" min="1">
+          <p class="form-help">Atualiza o progresso do livro se a meta for baseada em capítulos.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
             <label for="sessionDate">Data da Sessão:</label>
             <input type="date" id="sessionDate" class="form-input" required>
-            <p class="form-help">Após a meia-noite (00:00) conta para o dia seguinte.</p>
           </div>
           <div class="form-group">
             <label for="sessionStartTime">Hora do Registo:</label>
             <input type="time" id="sessionStartTime" class="form-input">
-            <p class="form-help">Automática (podes editar se quiseres).</p>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="sessionEndTime">Hora de Término (Opcional):</label>
-          <input type="time" id="sessionEndTime" class="form-input">
+          <label for="sessionNotes">Notas da Sessão / Cena escrita (Opcional):</label>
+          <textarea id="sessionNotes" class="form-textarea" rows="2" placeholder="Ex: Terminei a cena crucial do capítulo..."></textarea>
         </div>
 
-        <div class="form-group">
-          <label for="sessionNotes">Notas / Cena Escrita (Opcional):</label>
-          <textarea id="sessionNotes" class="form-textarea" rows="2" placeholder="Ex: Terminei o capítulo 4 na taberna com o detetive..."></textarea>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-          <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center;">
-            Gravar Sessão no Livro ✍️
-          </button>
-        </div>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Gravar Sessão no Livro ✍️
+        </button>
       </form>
     </div>
   </div>
@@ -301,25 +475,30 @@
         </div>
 
         <div class="form-group">
+          <label for="projectSeriesInput">Série / Saga (para agrupar livros):</label>
+          <input type="text" id="projectSeriesInput" class="form-input" placeholder="Ex: Trilogia dos Reis (ou deixa em branco se for livro único)">
+          <p class="form-help">Os livros com o mesmo nome de série ficam automaticamente agrupados na tua Biblioteca!</p>
+        </div>
+
+        <div class="form-group">
           <label for="projectGenre">Género Literário:</label>
           <input type="text" id="projectGenre" class="form-input" placeholder="Ex: Fantasia, Romance Histórico, Poesia...">
         </div>
 
         <div class="form-group">
-          <label for="projectSeries">Série / Saga (para agrupar livros):</label>
-          <input type="text" id="projectSeries" class="form-input" placeholder="Ex: Trilogia dos Reis, Volume 1...">
+          <label for="projectSynopsis">Sinopse Breve (Opcional):</label>
+          <textarea id="projectSynopsis" class="form-textarea" rows="2" placeholder="Pequena nota sobre o livro..."></textarea>
         </div>
 
         <div class="form-group">
           <label for="projectCoverUrl">URL da Capa (Opcional):</label>
           <input type="url" id="projectCoverUrl" class="form-input" placeholder="https://exemplo.com/capa.jpg">
+          <p class="form-help">Se não tiveres capa, a NanaLola cria uma encadernação clássica em pele e ouro para o teu livro!</p>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-          <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center;">
-            Criar Livro 📚
-          </button>
-        </div>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Criar Livro no NanaLola 📚
+        </button>
       </form>
     </div>
   </div>
@@ -328,31 +507,35 @@
   <div id="modalGoal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>🎯 Criar Meta no Projeto</h3>
+        <h3>🎯 Definir Nova Meta</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
-      
+
       <button type="button" id="btnPresetNanowrimo" class="btn-preset-nanowrimo">
-        ★ Preencher com Predefinição Clássica NaNoWriMo (1 a 30 Nov • 50.000 pal.)
+        ★ Predefinir NaNoWriMo Clássico (1 a 30 Nov • 50.000 Palavras)
       </button>
 
       <form id="formGoal">
+        <input type="hidden" id="goalProjectId">
+
         <div class="form-group">
           <label for="goalTitle">Título da Meta: *</label>
           <input type="text" id="goalTitle" class="form-input" placeholder="Ex: NaNoWriMo 2026 / Primeiro Rascunho" required>
         </div>
 
         <div class="form-group">
-          <label for="goalType">Tipo de Etapa:</label>
-          <select id="goalType" class="select-vintage">
-            <option value="WRITING">Escrita (contagem de palavras adicionadas)</option>
-            <option value="EDITING">Edição (contagem de palavras revistas)</option>
+          <label for="goalTargetUnit">Tipo de Meta / Como queres medir o progresso?</label>
+          <select id="goalTargetUnit" class="select-vintage" onchange="handleGoalUnitChange()">
+            <option value="WORDS">Por Palavras (ex: 50.000 palavras no NaNoWriMo)</option>
+            <option value="CHAPTERS">Sem Limite de Palavras / Por Capítulos (ex: 50 capítulos)</option>
+            <option value="PAGES">Sem Limite de Palavras / Por Páginas (ex: 200 páginas)</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="goalTargetWords">Número de Palavras a Atingir: *</label>
-          <input type="number" id="goalTargetWords" class="form-input" value="50000" min="100" required>
+          <label id="labelGoalTargetCount" for="goalTargetCount">Número Alvo a Atingir: *</label>
+          <input type="number" id="goalTargetCount" class="form-input" value="50000" min="1" required>
+          <p id="helpGoalTargetCount" class="form-help">Meta total de palavras.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -366,11 +549,36 @@
           </div>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-          <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center;">
-            Guardar Meta 🎯
-          </button>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Guardar Meta 🎯
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR PERFIL -->
+  <div id="modalEditProfile" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>👤 Editar Perfil de Escritor</h3>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <form id="formEditProfile">
+        <div class="form-group">
+          <label for="profileEditName">Nome do Escritor(a):</label>
+          <input type="text" id="profileEditName" class="form-input" required>
         </div>
+        <div class="form-group">
+          <label for="profileEditAvatar">Link da Foto de Perfil (URL):</label>
+          <input type="url" id="profileEditAvatar" class="form-input" placeholder="https://exemplo.com/foto.jpg">
+        </div>
+        <div class="form-group">
+          <label for="profileEditBio">Biografia / Lema de Escrita:</label>
+          <textarea id="profileEditBio" class="form-textarea" rows="3" placeholder="Partilha a tua paixão literária..."></textarea>
+        </div>
+        <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Guardar Perfil ✨
+        </button>
       </form>
     </div>
   </div>
@@ -394,7 +602,7 @@
     </div>
   </div>
 
-  <!-- Scripts -->
+  <!-- Scripts da Aplicação -->
   <script src="/js/charts.js"></script>
   <script src="/js/diploma.js"></script>
   <script src="/js/app.js"></script>

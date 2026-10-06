@@ -22,6 +22,8 @@ public class WritingSession {
     @Column(nullable = false)
     private Integer wordsAdded = 0;
 
+    private Integer currentChapter; // Em que capítulo o autor está (para metas por capítulos)
+
     @Column(nullable = false)
     private LocalDate sessionDate;
 
@@ -37,9 +39,10 @@ public class WritingSession {
     public WritingSession() {
     }
 
-    public WritingSession(Goal goal, Integer wordsAdded, LocalDate sessionDate, LocalTime startTime, LocalTime endTime, String notes) {
+    public WritingSession(Goal goal, Integer wordsAdded, Integer currentChapter, LocalDate sessionDate, LocalTime startTime, LocalTime endTime, String notes) {
         this.goal = goal;
         this.wordsAdded = wordsAdded != null ? wordsAdded : 0;
+        this.currentChapter = currentChapter;
         this.sessionDate = sessionDate != null ? sessionDate : LocalDate.now();
         this.startTime = startTime != null ? startTime : LocalTime.now();
         this.endTime = endTime;
@@ -69,6 +72,14 @@ public class WritingSession {
 
     public void setWordsAdded(Integer wordsAdded) {
         this.wordsAdded = wordsAdded;
+    }
+
+    public Integer getCurrentChapter() {
+        return currentChapter;
+    }
+
+    public void setCurrentChapter(Integer currentChapter) {
+        this.currentChapter = currentChapter;
     }
 
     public LocalDate getSessionDate() {

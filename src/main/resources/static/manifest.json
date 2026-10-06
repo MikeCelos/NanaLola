@@ -1,7 +1,7 @@
 {
-  "name": "NaNoWriMo Cozy Tracker",
-  "short_name": "NaNoWriMo",
-  "description": "App acolhedora e vintage para monitorizar projetos de escrita e metas do NaNoWriMo",
+  "name": "NanaLola Cozy Tracker",
+  "short_name": "NanaLola",
+  "description": "O teu refúgio acolhedor de escrita e NaNoWriMo",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#E8D6C8",
