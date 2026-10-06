@@ -8,8 +8,10 @@ services:
     envVars:
       - key: PORT
         value: 10000
-      # Conexão com Supabase ou Neon (PostgreSQL na Nuvem)
-      # Basta configurar a variável DATABASE_URL ou SPRING_DATASOURCE_URL no painel do Render!
+      # Cloud PostgreSQL connection (Neon / Supabase / Railway)
+      # Configure this variable in the Render Dashboard -> Environment tab for 100% free permanent persistence!
+      - key: DATABASE_URL
+        sync: false
       - key: SPRING_DATASOURCE_URL
         sync: false
       - key: SPRING_DATASOURCE_USERNAME

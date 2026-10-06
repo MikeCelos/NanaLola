@@ -42,7 +42,7 @@ public class AuthController {
     public ResponseEntity<?> getCurrentUser(@RequestHeader(value = "Authorization", required = false) String token) {
         User user = authService.getUserByToken(token);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(java.util.Map.of("error", "Não autenticado"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(java.util.Map.of("error", "Not authenticated"));
         }
         return ResponseEntity.ok(user);
     }
@@ -51,7 +51,7 @@ public class AuthController {
     public ResponseEntity<?> getProfile(@RequestHeader(value = "Authorization", required = false) String token) {
         User user = authService.getUserByToken(token);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(java.util.Map.of("error", "Não autenticado"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(java.util.Map.of("error", "Not authenticated"));
         }
         return ResponseEntity.ok(authService.getUserProfile(user));
     }

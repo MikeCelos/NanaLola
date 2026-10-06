@@ -392,9 +392,40 @@ async function loadUserProfile() {
     document.getElementById('profileTotalProjects').textContent = profile.totalProjectsCount || 0;
     document.getElementById('profileCompletedGoals').textContent = profile.completedGoalsCount || 0;
 
+    checkDatabaseStatus();
   } catch (err) {
     console.error('Error loading profile:', err);
   }
+}
+
+async function checkDatabaseStatus() {
+  try {
+    const res = await fetch('/api/status');
+    if (!res.ok) return;
+    const data = await res.json();
+    const container = document.getElementById('profileDbStatus');
+    if (!container) return;
+
+    if (data.persistent) {
+      container.innerHTML = `
+        <span style="display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:12px; background:rgba(46,125,50,0.12); color:#2e7d32; font-weight:600; font-size:0.8rem; border:1px solid rgba(46,125,50,0.25);">
+          🔒 Cloud Storage: Persistent & Safe
+        </span>
+      `;
+    } else {
+      container.innerHTML = `
+        <span style="display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:12px; background:rgba(230,81,0,0.12); color:#e65100; font-weight:600; font-size:0.8rem; border:1px solid rgba(230,81,0,0.25); cursor:pointer;" onclick="openDbHelpModal()" title="Click to see how to save data permanently">
+          ⚠️ Temporary Storage (Data resets on restart - Click to fix)
+        </span>
+      `;
+    }
+  } catch (e) {
+    console.debug('Failed to check db status:', e);
+  }
+}
+
+function openDbHelpModal() {
+  openModal('modalDbHelp');
 }
 
 function openEditProfileModal() {

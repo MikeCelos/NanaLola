@@ -192,6 +192,7 @@
             <h2 id="profileDisplayName">Author Name</h2>
             <div class="profile-username" id="profileUsername">@author</div>
             <p class="profile-bio" id="profileBio">Crafting captivating stories with coffee and imagination...</p>
+            <div id="profileDbStatus" style="margin-bottom: 14px;"></div>
             <button class="btn-vintage btn-secondary" onclick="openEditProfileModal()">
               ✏️ Edit Profile & Photo
             </button>
@@ -602,9 +603,53 @@
     </div>
   </div>
 
+  <!-- MODAL: DATABASE PERSISTENCE HELP -->
+  <div id="modalDbHelp" class="modal-overlay">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3>☁️ Free Database Setup (Never Lose Accounts)</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalDbHelp')">&times;</button>
+      </div>
+      <div style="font-size: 0.95rem; line-height: 1.6; margin-top: 12px; color: var(--color-espresso);">
+        <p style="margin-bottom: 12px;">
+          Render's free tier uses <strong>temporary containers</strong> that reset when updated or after 15 minutes of inactivity. Connecting a <strong>100% Free PostgreSQL Cloud Database</strong> keeps all user accounts, novels, and writing sessions permanently safe!
+        </p>
+
+        <div style="background: rgba(176, 122, 99, 0.1); border-left: 4px solid var(--color-terracotta); padding: 12px 14px; border-radius: 4px; margin-bottom: 14px;">
+          <strong style="color: var(--color-terracotta); font-size: 1.05rem;">Step 1: Get Your Free Database (1 min)</strong>
+          <ul style="margin: 8px 0 0 18px; padding: 0;">
+            <li>Go to <a href="https://neon.tech" target="_blank" style="color: var(--color-terracotta); font-weight: bold; text-decoration: underline;">Neon.tech</a> (Recommended: free forever, never expires) or <a href="https://supabase.com" target="_blank" style="color: var(--color-terracotta); font-weight: bold; text-decoration: underline;">Supabase.com</a>.</li>
+            <li>Sign up for free and create a new project.</li>
+            <li>Copy the <strong>Connection String</strong> (format: <code>postgresql://...</code>).</li>
+          </ul>
+        </div>
+
+        <div style="background: rgba(122, 63, 51, 0.08); border-left: 4px solid var(--color-cinnamon); padding: 12px 14px; border-radius: 4px; margin-bottom: 14px;">
+          <strong style="color: var(--color-cinnamon); font-size: 1.05rem;">Step 2: Add to Render Dashboard</strong>
+          <ul style="margin: 8px 0 0 18px; padding: 0;">
+            <li>Open <a href="https://dashboard.render.com" target="_blank" style="color: var(--color-cinnamon); font-weight: bold; text-decoration: underline;">dashboard.render.com</a>.</li>
+            <li>Select your <strong>NanaLola</strong> web service.</li>
+            <li>Go to the <strong>Environment</strong> tab.</li>
+            <li>Add an environment variable:</li>
+            <li style="margin-top: 4px;"><strong>Key:</strong> <code style="background: white; padding: 2px 6px; border-radius: 4px;">DATABASE_URL</code></li>
+            <li style="margin-top: 4px;"><strong>Value:</strong> <em>(Paste the connection string you copied)</em></li>
+            <li style="margin-top: 4px;">Click <strong>Save Changes</strong>.</li>
+          </ul>
+        </div>
+
+        <p style="color: #2e7d32; font-weight: 600; margin-top: 10px;">
+          ✨ Render will automatically restart, and all your accounts and books will be permanently stored in the cloud!
+        </p>
+      </div>
+      <div style="margin-top: 18px; text-align: right;">
+        <button class="btn-vintage btn-primary" onclick="closeModal('modalDbHelp')">Understood</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts da Aplicação -->
-  <script src="/js/charts.js?v=2"></script>
-  <script src="/js/diploma.js?v=2"></script>
-  <script src="/js/app.js?v=2"></script>
+  <script src="/js/charts.js?v=3"></script>
+  <script src="/js/diploma.js?v=3"></script>
+  <script src="/js/app.js?v=3"></script>
 </body>
 </html>
