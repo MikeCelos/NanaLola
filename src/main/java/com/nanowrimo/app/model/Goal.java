@@ -26,12 +26,10 @@ public class Goal {
     private GoalType type = GoalType.WRITING;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private GoalUnit targetUnit = GoalUnit.WORDS;
 
     private Integer targetWords = 50000;
 
-    @Column(nullable = false)
     private Integer targetCount = 50000;
 
     private Integer currentUnitProgress = 0; // Ex: se for capítulos, indica em que capítulo vai
@@ -42,6 +40,7 @@ public class Goal {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean archived = false; // Metas antigas vs ativas
 
     private LocalDateTime createdAt = LocalDateTime.now();
