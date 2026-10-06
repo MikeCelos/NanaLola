@@ -36,7 +36,7 @@ function renderCharts(stats) {
         labels: labels,
         datasets: [
           {
-            label: 'Palavras Atingidas',
+            label: 'Words Written',
             data: cumulativeData,
             borderColor: colorTerracotta,
             backgroundColor: 'rgba(122, 63, 51, 0.12)',
@@ -49,7 +49,7 @@ function renderCharts(stats) {
             pointHoverRadius: 7
           },
           {
-            label: 'Meta Esperada Linear',
+            label: 'Linear Target Pace',
             data: expectedData,
             borderColor: colorCinnamon,
             borderDash: [5, 5],
@@ -92,7 +92,7 @@ function renderCharts(stats) {
             padding: 12,
             callbacks: {
               label: function(context) {
-                return `${context.dataset.label}: ${context.parsed.y.toLocaleString('pt-PT')} palavras`;
+                return `${context.dataset.label}: ${context.parsed.y.toLocaleString('en-US')} words`;
               },
               afterBody: function(contexts) {
                 if (contexts.length >= 2) {
@@ -100,7 +100,7 @@ function renderCharts(stats) {
                   const esperado = contexts[1].parsed.y;
                   const dif = atingido - esperado;
                   const sinal = dif >= 0 ? '+' : '';
-                  return `Diferença: ${sinal}${dif.toLocaleString('pt-PT')} palavras`;
+                  return `Difference: ${sinal}${dif.toLocaleString('en-US')} words`;
                 }
                 return '';
               }
@@ -131,7 +131,7 @@ function renderCharts(stats) {
                 family: '"Times New Roman", Times, serif'
               },
               callback: function(val) {
-                return val.toLocaleString('pt-PT');
+                return val.toLocaleString('en-US');
               }
             }
           }
@@ -156,7 +156,7 @@ function renderCharts(stats) {
         labels: labels,
         datasets: [
           {
-            label: 'Palavras Escritas no Dia',
+            label: 'Words Written on Day',
             data: dailyWords,
             backgroundColor: backgroundColors,
             borderColor: colorEspresso,
@@ -186,9 +186,9 @@ function renderCharts(stats) {
             callbacks: {
               label: function(context) {
                 const stat = dailyStats[context.dataIndex];
-                let label = `Escrito: ${context.parsed.y.toLocaleString('pt-PT')} palavras`;
+                let label = `Written: ${context.parsed.y.toLocaleString('en-US')} words`;
                 if (stat && stat.recordDay && stat.wordsLogged > 0) {
-                  label += ' 🏆 (Melhor Dia / Recorde!)';
+                  label += ' 🏆 (Best Day / Record!)';
                 }
                 return label;
               }
@@ -219,7 +219,7 @@ function renderCharts(stats) {
                 family: '"Times New Roman", Times, serif'
               },
               callback: function(val) {
-                return val.toLocaleString('pt-PT');
+                return val.toLocaleString('en-US');
               }
             }
           }

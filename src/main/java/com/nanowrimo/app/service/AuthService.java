@@ -35,10 +35,10 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest req) {
         if (req.getUsername() == null || req.getUsername().trim().length() < 3) {
-            throw new IllegalArgumentException("O nome de utilizador deve ter pelo menos 3 caracteres.");
+            throw new IllegalArgumentException("Username must be at least 3 characters long.");
         }
         if (req.getPassword() == null || req.getPassword().length() < 4) {
-            throw new IllegalArgumentException("A palavra-passe deve ter pelo menos 4 caracteres.");
+            throw new IllegalArgumentException("Password must be at least 4 characters long.");
         }
 
         String username = req.getUsername().trim().toLowerCase();
@@ -47,17 +47,17 @@ public class AuthService {
                 : username + "@nanalola.local";
 
         if (userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("Este nome de utilizador já está a ser utilizado.");
+            throw new IllegalArgumentException("This username is already taken.");
         }
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Este email já está registado.");
+            throw new IllegalArgumentException("This email is already registered.");
         }
 
         String passwordHash = PasswordUtil.hashPassword(req.getPassword());
         User user = new User(username, email, passwordHash, req.getDisplayName());
         user = userRepository.save(user);
 
-        // Criar um livro inicial acolhedor no NanaLola para o novo autor
+        // Create a cozy initial starter project for the new author
         createInitialStarterProject(user);
 
         String token = createSessionToken(user);
@@ -68,10 +68,10 @@ public class AuthService {
     public AuthResponse login(LoginRequest req) {
         String input = req.getUsernameOrEmail() != null ? req.getUsernameOrEmail().trim().toLowerCase() : "";
         User user = userRepository.findByUsernameOrEmail(input, input)
-                .orElseThrow(() -> new IllegalArgumentException("Utilizador ou email não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("User or email not found."));
 
         if (!PasswordUtil.checkPassword(req.getPassword(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Palavra-passe incorreta.");
+            throw new IllegalArgumentException("Incorrect password.");
         }
 
         String token = createSessionToken(user);
@@ -146,7 +146,7 @@ public class AuthService {
     }
 
     private void createInitialStarterProject(User user) {
-        Project starter = new Project(user, "O Meu Primeiro Romance", "", "Ficção Acolhedora", "Crónicas do Café", "Uma história escrita com dedicação e café.");
+        Project starter = new Project(user, "My First Novel", "", "Cozy Fiction", "Chronicles of the Coffee Shop", "A heartwarming story crafted with devotion, coffee, and imagination.");
         starter = projectRepository.save(starter);
 
         int year = LocalDate.now().getYear();

@@ -22,13 +22,13 @@ public class StatsService {
     private final BadgeService badgeService;
 
     private static final List<String> MOTIVATIONAL_QUOTES = List.of(
-            "\"Escrever é que nem cavar um poço: a água é turva no início, depois clareia.\" — Gabriel García Márquez",
-            "\"Não podes editar uma página em branco.\" — Jodi Picoult",
-            "\"A primeira versão de qualquer coisa é sempre um rascunho de coragem.\" — Ernest Hemingway",
-            "\"Escreve bêbado, edita sóbrio.\" — Peter De Vries",
-            "\"Uma palavra após outra é poder.\" — Margaret Atwood",
-            "\"O café transforma imaginação em prosa.\" — NanaLola Cozy",
-            "\"Cada frase escrita hoje aproxima o teu livro do mundo.\" — NanaLola"
+            "\"Writing is like digging a well: the water is murky at first, then it clears.\" — Gabriel García Márquez",
+            "\"You can't edit a blank page.\" — Jodi Picoult",
+            "\"The first draft of anything is just courage on paper.\" — Ernest Hemingway",
+            "\"Write with passion, edit with care.\" — NanaLola",
+            "\"A word after a word after a word is power.\" — Margaret Atwood",
+            "\"Coffee turns imagination into prose.\" — NanaLola Cozy",
+            "\"Every sentence written today brings your novel closer to the world.\" — NanaLola"
     );
 
     public StatsService(GoalRepository goalRepository,
@@ -222,35 +222,35 @@ public class StatsService {
         }
         res.setDailyStats(dailyStats);
 
-        // Avaliar humor e mensagem motivacional
+        // Evaluate mood and motivational message
         if (isChapters) {
             if (res.isCompleted()) {
                 res.setMoodStatus("HAPPY");
                 res.setMoodEmoji("🏆✨");
-                res.setMoodMessage("Todos os capítulos concluídos! Parabéns pela tua obra literária!");
+                res.setMoodMessage("All chapters completed! Congratulations on finishing your manuscript!");
             } else if (res.getCurrentUnitProgress() > 0) {
                 res.setMoodStatus("NORMAL");
                 res.setMoodEmoji("📖☕");
-                res.setMoodMessage("Mais um capítulo ganha vida! Continua a mergulhar na tua história.");
+                res.setMoodMessage("Another chapter comes alive! Keep diving into your story.");
             } else {
                 res.setMoodStatus("ENCOURAGING");
                 res.setMoodEmoji("🌱☕");
-                res.setMoodMessage("Hora de abrir o primeiro capítulo. Pega num café e solta as ideias!");
+                res.setMoodMessage("Time to open the first chapter. Grab a warm beverage and let the words flow!");
             }
         } else {
             int expectedToday = Math.min(res.getTargetWords(), (int) Math.round(res.getOriginalDailyGoal() * Math.max(1, daysElapsed)));
             if (currentWords >= expectedToday) {
                 res.setMoodStatus("HAPPY");
                 res.setMoodEmoji("😊✨");
-                res.setMoodMessage("Ritmo incrível! Estás acima da meta diária esperada. O teu livro está a voar!");
+                res.setMoodMessage("Incredible pace! You are ahead of your expected daily goal. Your book is flying!");
             } else if (currentWords >= expectedToday * 0.75) {
                 res.setMoodStatus("NORMAL");
                 res.setMoodEmoji("☕📖");
-                res.setMoodMessage("Bom progresso! Pega numa chávena de café e escreve mais algumas linhas.");
+                res.setMoodMessage("Great progress! Grab a cozy cup of coffee and write a few more lines.");
             } else {
                 res.setMoodStatus("ENCOURAGING");
                 res.setMoodEmoji("🌱☕");
-                res.setMoodMessage("Não desanimes! Cada palavra conta e ainda há tempo de recuperar. Respira fundo e continua.");
+                res.setMoodMessage("Don't give up! Every word counts and you can always catch up. Take a deep breath and keep writing.");
             }
         }
 

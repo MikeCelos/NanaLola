@@ -80,8 +80,8 @@ function showMainApp() {
   document.getElementById('viewAuth').style.display = 'none';
   document.getElementById('mainAppWrapper').style.display = 'block';
 
-  const name = state.currentUser?.displayName || state.currentUser?.username || 'Escritor(a)';
-  document.getElementById('homeGreetingTitle').textContent = `Bem-vinda, ${name}! ☕`;
+  const name = state.currentUser?.displayName || state.currentUser?.username || 'Writer';
+  document.getElementById('homeGreetingTitle').textContent = `Welcome, ${name}! ☕`;
 }
 
 function switchAuthTab(tab) {
@@ -100,17 +100,17 @@ function handleLogout() {
 }
 
 // ==========================================================================
-// NAVEGAÇÃO ENTRE ECRÃS
+// VIEW NAVIGATION
 // ==========================================================================
 function navigateTo(viewName) {
   state.currentView = viewName;
 
-  // Atualizar botões da Navbar
+  // Update navbar buttons
   document.getElementById('navBtnHome').classList.toggle('active', viewName === 'HOME');
   document.getElementById('navBtnLibrary').classList.toggle('active', viewName === 'LIBRARY');
   document.getElementById('navBtnProfile').classList.toggle('active', viewName === 'PROFILE');
 
-  // Esconder todas as vistas
+  // Hide all sections
   document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
 
   if (viewName === 'HOME') {
@@ -128,7 +128,7 @@ function navigateTo(viewName) {
 }
 
 // ==========================================================================
-// 1. PÁGINA INICIAL: PROJETOS ATIVOS
+// 1. HOME: ACTIVE PROJECTS
 // ==========================================================================
 async function loadActiveProjects() {
   try {
@@ -142,7 +142,7 @@ async function loadActiveProjects() {
 
     const countLabel = document.getElementById('activeProjectsCountLabel');
     if (countLabel) {
-      countLabel.textContent = `${projects.length} ${projects.length === 1 ? 'livro em escrita' : 'livros em escrita'}`;
+      countLabel.textContent = `${projects.length} ${projects.length === 1 ? 'book in progress' : 'books in progress'}`;
     }
 
     const container = document.getElementById('activeProjectsContainer');
@@ -152,9 +152,9 @@ async function loadActiveProjects() {
       container.innerHTML = `
         <div style="grid-column: 1 / -1; background: var(--color-card-bg); border: 2px dashed var(--color-border); border-radius: var(--radius-md); padding: 36px; text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 8px;">📖</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 6px;">Ainda não tens projetos ativos!</h3>
-          <p style="color: var(--color-taupe); margin-bottom: 16px;">Começa agora o teu primeiro livro ou desafio NaNoWriMo.</p>
-          <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">+ Começar Novo Livro</button>
+          <h3 style="font-size: 1.3rem; margin-bottom: 6px;">No active projects yet!</h3>
+          <p style="color: var(--color-taupe); margin-bottom: 16px;">Begin your novel or launch a new NaNoWriMo challenge now.</p>
+          <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">+ Start New Book</button>
         </div>
       `;
       return;
@@ -165,20 +165,20 @@ async function loadActiveProjects() {
       const g = item.activeGoal;
       const seriesGenre = [p.series, p.genre].filter(Boolean).join(' • ');
 
-      let progressInfo = 'Sem meta ativa';
-      let progressSub = 'Define uma meta no livro';
+      let progressInfo = 'No active goal';
+      let progressSub = 'Set a goal for this book';
       if (g) {
         if (g.targetUnit === 'CHAPTERS') {
-          progressInfo = `Capítulo ${g.currentUnitProgress || 0} de ${g.targetCount}`;
-          progressSub = `${item.progressPercentage}% concluído (${item.totalWords.toLocaleString('pt-PT')} palavras escritas)`;
+          progressInfo = `Chapter ${g.currentUnitProgress || 0} of ${g.targetCount}`;
+          progressSub = `${item.progressPercentage}% completed (${item.totalWords.toLocaleString('en-US')} words written)`;
         } else {
-          progressInfo = `${item.totalWords.toLocaleString('pt-PT')} / ${(g.targetWords || g.targetCount).toLocaleString('pt-PT')} palavras`;
-          progressSub = `${item.progressPercentage}% concluído`;
+          progressInfo = `${item.totalWords.toLocaleString('en-US')} / ${(g.targetWords || g.targetCount).toLocaleString('en-US')} words`;
+          progressSub = `${item.progressPercentage}% completed`;
         }
       }
 
       const coverHtml = p.coverUrl 
-        ? `<img src="${escapeHtml(p.coverUrl)}" alt="Capa">`
+        ? `<img src="${escapeHtml(p.coverUrl)}" alt="Cover">`
         : `<span>${escapeHtml(p.title.substring(0, 16))}</span>`;
 
       return `
@@ -188,7 +188,7 @@ async function loadActiveProjects() {
               <div class="book-cover-thumbnail">${coverHtml}</div>
               <div class="project-card-info">
                 <h3>${escapeHtml(p.title)}</h3>
-                <div class="project-card-meta">${escapeHtml(seriesGenre || 'Ficção Literária')}</div>
+                <div class="project-card-meta">${escapeHtml(seriesGenre || 'Literary Fiction')}</div>
                 ${g ? `<span class="goal-tag">🎯 ${escapeHtml(g.title)}</span>` : ''}
               </div>
             </div>
@@ -208,14 +208,14 @@ async function loadActiveProjects() {
           <div class="project-card-actions">
             ${g ? `
               <button class="btn-vintage btn-primary" style="flex: 1; justify-content: center;" onclick="openSessionModalForGoal(${g.id})">
-                ✍️ Escrever
+                ✍️ Write
               </button>
               <button class="btn-vintage btn-secondary" style="flex: 1; justify-content: center;" onclick="openGoalStats(${g.id})">
-                📊 Métricas
+                📊 Metrics
               </button>
             ` : `
               <button class="btn-vintage btn-primary" style="width: 100%; justify-content: center;" onclick="openCreateGoalForProject(${p.id})">
-                + Definir Meta
+                + Set Goal
               </button>
             `}
           </div>
@@ -224,12 +224,12 @@ async function loadActiveProjects() {
     }).join('');
 
   } catch (err) {
-    console.error('Erro ao carregar projetos ativos:', err);
+    console.error('Error loading active projects:', err);
   }
 }
 
 // ==========================================================================
-// 2. BIBLIOTECA (Agrupada por Séries e Metas Antigas)
+// 2. LIBRARY (Grouped by Series & Historical Goals)
 // ==========================================================================
 async function loadLibrary() {
   try {
@@ -247,15 +247,15 @@ async function loadLibrary() {
     if (library.length === 0) {
       container.innerHTML = `
         <div style="background: var(--color-card-bg); border: 2px dashed var(--color-border); border-radius: var(--radius-md); padding: 40px; text-align: center;">
-          <h3 style="font-size: 1.4rem; margin-bottom: 8px;">A tua Biblioteca está pronta para a primeira história!</h3>
-          <p style="color: var(--color-taupe); margin-bottom: 16px;">Adiciona o teu livro para organizar por sagas e metas.</p>
-          <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">+ Criar Primeiro Livro</button>
+          <h3 style="font-size: 1.4rem; margin-bottom: 8px;">Your Library is ready for its first story!</h3>
+          <p style="color: var(--color-taupe); margin-bottom: 16px;">Add your novel to organize by sagas and manage goals.</p>
+          <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">+ Create First Book</button>
         </div>
       `;
       return;
     }
 
-    // Agrupar por Séries
+    // Group by series
     const seriesMap = new Map();
     const standaloneBooks = [];
 
@@ -273,13 +273,13 @@ async function loadLibrary() {
 
     let html = '';
 
-    // 1. Grupos de Séries
+    // 1. Series Groups
     for (const [seriesName, books] of seriesMap.entries()) {
       html += `
         <div class="series-section">
           <div class="series-header">
-            <h3>📚 Série: <em>${escapeHtml(seriesName)}</em></h3>
-            <span class="chart-badge">${books.length} ${books.length === 1 ? 'Livro' : 'Livros'} na Saga</span>
+            <h3>📚 Series: <em>${escapeHtml(seriesName)}</em></h3>
+            <span class="chart-badge">${books.length} ${books.length === 1 ? 'Book' : 'Books'} in Saga</span>
           </div>
           <div class="library-books-grid">
             ${books.map(renderLibraryBookCard).join('')}
@@ -288,13 +288,13 @@ async function loadLibrary() {
       `;
     }
 
-    // 2. Livros Autónomos
+    // 2. Stand-Alone Books
     if (standaloneBooks.length > 0) {
       html += `
         <div class="series-section">
           <div class="series-header">
-            <h3>📖 Livros Autónomos & Histórias Únicas</h3>
-            <span class="chart-badge">${standaloneBooks.length} Livros</span>
+            <h3>📖 Stand-Alone Books & Single Stories</h3>
+            <span class="chart-badge">${standaloneBooks.length} Books</span>
           </div>
           <div class="library-books-grid">
             ${standaloneBooks.map(renderLibraryBookCard).join('')}
@@ -306,7 +306,7 @@ async function loadLibrary() {
     container.innerHTML = html;
 
   } catch (err) {
-    console.error('Erro ao carregar biblioteca:', err);
+    console.error('Error loading library:', err);
   }
 }
 
@@ -319,42 +319,42 @@ function renderLibraryBookCard(item) {
     <div class="library-book-item">
       <div style="display: flex; gap: 12px; margin-bottom: 10px;">
         <div class="book-cover-thumbnail" style="width: 55px; height: 80px;">
-          ${p.coverUrl ? `<img src="${escapeHtml(p.coverUrl)}" alt="Capa">` : `<span>${escapeHtml(p.title.substring(0, 12))}</span>`}
+          ${p.coverUrl ? `<img src="${escapeHtml(p.coverUrl)}" alt="Cover">` : `<span>${escapeHtml(p.title.substring(0, 12))}</span>`}
         </div>
         <div style="flex: 1;">
           <h4 style="font-size: 1.15rem; margin-bottom: 2px;">${escapeHtml(p.title)}</h4>
-          <div style="font-size: 0.85rem; color: var(--color-cinnamon); font-style: italic;">${escapeHtml(p.genre || 'Ficção')}</div>
-          <div style="font-size: 0.82rem; color: var(--color-taupe); margin-top: 4px;">Total: <strong>${item.totalWords.toLocaleString('pt-PT')}</strong> palavras</div>
+          <div style="font-size: 0.85rem; color: var(--color-cinnamon); font-style: italic;">${escapeHtml(p.genre || 'Fiction')}</div>
+          <div style="font-size: 0.82rem; color: var(--color-taupe); margin-top: 4px;">Total: <strong>${item.totalWords.toLocaleString('en-US')}</strong> words</div>
         </div>
       </div>
 
       <div class="goals-accordion">
-        <div class="goals-accordion-title">Metas Deste Livro</div>
+        <div class="goals-accordion-title">Goals for this Book</div>
         
         ${activeG ? `
           <div class="goal-item-row is-active" onclick="openGoalStats(${activeG.id})">
             <div>
               <strong>🎯 ${escapeHtml(activeG.title)}</strong>
-              <div style="font-size: 0.78rem; color: var(--color-terracotta);">Meta Ativa em Progresso</div>
+              <div style="font-size: 0.78rem; color: var(--color-terracotta);">Active Goal in Progress</div>
             </div>
-            <span style="font-size: 0.85rem; font-weight: bold; color: var(--color-terracotta);">Ver ➔</span>
+            <span style="font-size: 0.85rem; font-weight: bold; color: var(--color-terracotta);">View ➔</span>
           </div>
         ` : `
           <button class="btn-vintage btn-secondary" style="width: 100%; font-size: 0.85rem; padding: 6px; margin-bottom: 6px;" onclick="openCreateGoalForProject(${p.id})">
-            + Criar Meta Para Este Livro
+            + Set Goal For This Book
           </button>
         `}
 
         ${archivedGoals.length > 0 ? `
           <div style="margin-top: 8px;">
-            <div style="font-size: 0.78rem; color: var(--color-taupe); margin-bottom: 4px;">Histórico de Metas Antigas:</div>
+            <div style="font-size: 0.78rem; color: var(--color-taupe); margin-bottom: 4px;">Historical Past Goals:</div>
             ${archivedGoals.map(ag => `
               <div class="goal-item-row is-archived" onclick="openGoalStats(${ag.id})">
                 <div>
                   <span>📦 ${escapeHtml(ag.title)}</span>
-                  <div style="font-size: 0.75rem; color: var(--color-taupe);">Meta Antiga / Concluída</div>
+                  <div style="font-size: 0.75rem; color: var(--color-taupe);">Archived / Completed Goal</div>
                 </div>
-                <span style="font-size: 0.82rem; color: var(--color-taupe);">Estatísticas ➔</span>
+                <span style="font-size: 0.82rem; color: var(--color-taupe);">Stats ➔</span>
               </div>
             `).join('')}
           </div>
@@ -365,7 +365,7 @@ function renderLibraryBookCard(item) {
 }
 
 // ==========================================================================
-// 3. PERFIL DO ESCRITOR
+// 3. AUTHOR PROFILE
 // ==========================================================================
 async function loadUserProfile() {
   try {
@@ -377,23 +377,23 @@ async function loadUserProfile() {
     const profile = await res.json();
     state.currentProfile = profile;
 
-    // Preencher Perfil
+    // Populate Profile
     document.getElementById('profileDisplayName').textContent = profile.displayName || profile.username;
     document.getElementById('profileUsername').textContent = `@${profile.username}`;
-    document.getElementById('profileBio').textContent = profile.bio || "A escrever grandes histórias com café e inspiração.";
+    document.getElementById('profileBio').textContent = profile.bio || "Crafting great stories with coffee and inspiration.";
 
     if (profile.avatarUrl) {
       document.getElementById('profileAvatarImg').src = profile.avatarUrl;
     }
 
-    // 4 Grandes Indicadores
-    document.getElementById('profileTotalWords').textContent = Number(profile.totalWordsAllProjects || 0).toLocaleString('pt-PT');
-    document.getElementById('profileBestRecord').textContent = Number(profile.bestDayWordsRecord || 0).toLocaleString('pt-PT');
+    // 4 Key Indicators
+    document.getElementById('profileTotalWords').textContent = Number(profile.totalWordsAllProjects || 0).toLocaleString('en-US');
+    document.getElementById('profileBestRecord').textContent = Number(profile.bestDayWordsRecord || 0).toLocaleString('en-US');
     document.getElementById('profileTotalProjects').textContent = profile.totalProjectsCount || 0;
     document.getElementById('profileCompletedGoals').textContent = profile.completedGoalsCount || 0;
 
   } catch (err) {
-    console.error('Erro ao carregar perfil:', err);
+    console.error('Error loading profile:', err);
   }
 }
 
@@ -425,7 +425,7 @@ async function openGoalStats(goalId) {
     loadSessionsHistory(goalId);
 
   } catch (err) {
-    console.error('Erro ao carregar detalhes da meta:', err);
+    console.error('Error loading goal details:', err);
   }
 }
 
@@ -433,69 +433,69 @@ function renderGoalStatsDetails(s) {
   const isChapters = s.targetUnit === 'CHAPTERS';
 
   document.getElementById('goalDetailBookTitle').textContent = s.projectTitle;
-  const unitLabel = isChapters ? 'Por Capítulos' : 'Por Palavras';
-  document.getElementById('goalDetailBadge').textContent = `${s.goalTitle} (${unitLabel}${s.archived ? ' • Antiga' : ''})`;
-  document.getElementById('goalDetailMeta').textContent = [s.projectSeries, s.projectGenre].filter(Boolean).join(' • ') || 'Ficção Literária';
+  const unitLabel = isChapters ? 'By Chapters' : 'By Words';
+  document.getElementById('goalDetailBadge').textContent = `${s.goalTitle} (${unitLabel}${s.archived ? ' • Past' : ''})`;
+  document.getElementById('goalDetailMeta').textContent = [s.projectSeries, s.projectGenre].filter(Boolean).join(' • ') || 'Literary Fiction';
 
-  // Configuração do botão de arquivar
+  // Archive button
   const btnArchive = document.getElementById('btnArchiveCurrentGoal');
   if (btnArchive) {
     btnArchive.style.display = s.archived ? 'none' : 'inline-flex';
     btnArchive.onclick = () => archiveGoal(s.goalId);
   }
 
-  // Progresso
+  // Progress
   if (isChapters) {
-    document.getElementById('progressSectionTitle').textContent = `Progresso por Capítulos (${s.currentUnitProgress} de ${s.targetCount} concluídos)`;
-    document.getElementById('metricMainLabel').textContent = "Capítulos Concluídos";
+    document.getElementById('progressSectionTitle').textContent = `Chapter Progress (${s.currentUnitProgress} of ${s.targetCount} completed)`;
+    document.getElementById('metricMainLabel').textContent = "Chapters Completed";
     document.getElementById('metricCurrentWords').textContent = `${s.currentUnitProgress}`;
-    document.getElementById('metricTargetWords').textContent = `/ ${s.targetCount} capítulos`;
+    document.getElementById('metricTargetWords').textContent = `/ ${s.targetCount} chapters`;
 
-    // Ocultar previsões diárias rígidas como a cliente pediu
+    // Hide rigid daily quotas for chapter goals
     document.getElementById('cardRemainingDaily').style.display = 'none';
     document.getElementById('cardEstDate').style.display = 'none';
   } else {
-    document.getElementById('progressSectionTitle').textContent = "Progresso do Manuscrito";
-    document.getElementById('metricMainLabel').textContent = "Palavras Escritas";
-    document.getElementById('metricCurrentWords').textContent = s.currentWords.toLocaleString('pt-PT');
-    document.getElementById('metricTargetWords').textContent = `/ ${s.targetWords.toLocaleString('pt-PT')}`;
+    document.getElementById('progressSectionTitle').textContent = "Manuscript Progress";
+    document.getElementById('metricMainLabel').textContent = "Words Written";
+    document.getElementById('metricCurrentWords').textContent = s.currentWords.toLocaleString('en-US');
+    document.getElementById('metricTargetWords').textContent = `/ ${s.targetWords.toLocaleString('en-US')}`;
 
     document.getElementById('cardRemainingDaily').style.display = 'flex';
     document.getElementById('cardEstDate').style.display = 'flex';
-    document.getElementById('metricRemainingDaily').textContent = s.remainingDailyGoal.toLocaleString('pt-PT');
-    document.getElementById('metricOriginalDaily').textContent = `Meta original: ${s.originalDailyGoal.toLocaleString('pt-PT')} / dia`;
+    document.getElementById('metricRemainingDaily').textContent = s.remainingDailyGoal.toLocaleString('en-US');
+    document.getElementById('metricOriginalDaily').textContent = `Original goal: ${s.originalDailyGoal.toLocaleString('en-US')} / day`;
 
     if (s.completed) {
-      document.getElementById('metricEstDate').textContent = "Concluído! 🏆";
-      document.getElementById('metricEstSub').textContent = "Meta 100% atingida";
+      document.getElementById('metricEstDate').textContent = "Completed! 🏆";
+      document.getElementById('metricEstSub').textContent = "Goal 100% reached";
     } else if (s.estimatedCompletionDate) {
       const parts = s.estimatedCompletionDate.split('-');
       const d = new Date(parts[0], parts[1] - 1, parts[2]);
-      document.getElementById('metricEstDate').textContent = d.toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' });
-      document.getElementById('metricEstSub').textContent = `Com média de ${s.currentDailyAverage} pal./dia`;
+      document.getElementById('metricEstDate').textContent = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+      document.getElementById('metricEstSub').textContent = `At ${s.currentDailyAverage} words/day pace`;
     } else {
-      document.getElementById('metricEstDate').textContent = "A calcular...";
-      document.getElementById('metricEstSub').textContent = "Regista mais sessões";
+      document.getElementById('metricEstDate').textContent = "Calculating...";
+      document.getElementById('metricEstSub').textContent = "Log more sessions";
     }
   }
 
-  // Métricas comuns a ambos
-  document.getElementById('metricActualDaily').textContent = `${s.currentDailyAverage.toLocaleString('pt-PT')} pal./dia`;
-  document.getElementById('metricBestDay').textContent = s.bestDayWords.toLocaleString('pt-PT');
+  // Common metrics
+  document.getElementById('metricActualDaily').textContent = `${s.currentDailyAverage.toLocaleString('en-US')} words/day`;
+  document.getElementById('metricBestDay').textContent = s.bestDayWords.toLocaleString('en-US');
   document.getElementById('recordBadge').style.display = s.newRecord ? 'inline-block' : 'none';
-  document.getElementById('metricStreak').textContent = `${s.streakDays} ${s.streakDays === 1 ? 'dia' : 'dias'}`;
+  document.getElementById('metricStreak').textContent = `${s.streakDays} ${s.streakDays === 1 ? 'day' : 'days'}`;
 
-  // Barra de Progresso
-  document.getElementById('progressText').textContent = `${s.progressPercentage}% concluído`;
+  // Progress Bar
+  document.getElementById('progressText').textContent = `${s.progressPercentage}% completed`;
   document.getElementById('progressBarFill').style.width = `${Math.min(100, s.progressPercentage)}%`;
 
-  // Humor & Frase
+  // Mood & Quote
   document.getElementById('moodEmoji').textContent = s.moodEmoji;
-  document.getElementById('moodTitle').textContent = s.moodStatus === 'HAPPY' ? 'Progresso Impecável!' : (s.moodStatus === 'NORMAL' ? 'Ritmo Confortável' : 'Cada Linha Conta');
+  document.getElementById('moodTitle').textContent = s.moodStatus === 'HAPPY' ? 'Incredible Flow!' : (s.moodStatus === 'NORMAL' ? 'Cozy Pace' : 'Every Line Counts');
   document.getElementById('moodText').textContent = s.moodMessage;
   document.getElementById('moodQuote').textContent = s.motivationalQuote;
 
-  // Celebração de Meta
+  // Goal Celebration
   const celebBox = document.getElementById('celebrationBox');
   if (celebBox) {
     if (s.completed) {
@@ -503,7 +503,7 @@ function renderGoalStatsDetails(s) {
       triggerConfetti();
       document.getElementById('btnOpenDiploma').onclick = () => {
         openModal('modalDiploma');
-        const author = state.currentProfile?.displayName || state.currentUser?.displayName || "Escritor(a) Dedicado(a)";
+        const author = state.currentProfile?.displayName || state.currentUser?.displayName || "Dedicated Author";
         generateDiploma(s, author);
       };
     } else {
@@ -511,28 +511,28 @@ function renderGoalStatsDetails(s) {
     }
   }
 
-  // Medalhas
+  // Badges
   renderBadges(s.badges);
 }
 
-// Arquivar Meta
+// Archive Goal
 async function archiveGoal(goalId) {
-  if (!confirm("Queres arquivar esta meta e marcá-la como concluída/antiga? Ela ficará guardada na tua Biblioteca!")) return;
+  if (!confirm("Do you want to archive this goal and mark it as completed/past? It will remain saved in your Library!")) return;
   try {
     const res = await fetch(`/api/goals/${goalId}/archive`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${state.token}` }
     });
     if (res.ok) {
-      alert("Meta arquivada com sucesso! Podes encontrá-la sempre na Biblioteca.");
+      alert("Goal successfully archived! You can always find it in your Library.");
       navigateTo('LIBRARY');
     }
   } catch (err) {
-    console.error('Erro ao arquivar meta:', err);
+    console.error('Error archiving goal:', err);
   }
 }
 
-// Histórico de Sessões
+// Sessions History
 async function loadSessionsHistory(goalId) {
   try {
     const res = await fetch(`/api/sessions/goal/${goalId}`, {
@@ -545,38 +545,38 @@ async function loadSessionsHistory(goalId) {
     if (!tbody) return;
 
     if (sessions.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-taupe);">Nenhuma sessão de escrita ainda. Começa agora a escrever! ☕</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-taupe);">No writing sessions yet. Start writing today! ☕</td></tr>`;
       return;
     }
 
     tbody.innerHTML = sessions.map(s => {
       const dateParts = s.sessionDate.split('-');
       const d = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-      const dateStr = d.toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
+      const dateStr = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
       const timeStr = s.startTime ? s.startTime.substring(0, 5) : '--:--';
-      const chStr = s.currentChapter ? `Cap. ${s.currentChapter}` : '—';
+      const chStr = s.currentChapter ? `Ch. ${s.currentChapter}` : '—';
 
       return `
         <tr>
           <td><strong>${dateStr}</strong></td>
           <td>${timeStr}</td>
-          <td><strong style="color:var(--color-terracotta);">+${s.wordsAdded.toLocaleString('pt-PT')}</strong></td>
+          <td><strong style="color:var(--color-terracotta);">+${s.wordsAdded.toLocaleString('en-US')}</strong></td>
           <td><span class="chart-badge" style="padding:2px 6px;">${chStr}</span></td>
           <td style="font-style:italic; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(s.notes || '—')}</td>
           <td style="text-align:right;">
-            <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Apagar registo">✕</button>
+            <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Delete session log">✕</button>
           </td>
         </tr>
       `;
     }).join('');
 
   } catch (err) {
-    console.error('Erro ao carregar sessões:', err);
+    console.error('Error loading sessions:', err);
   }
 }
 
 async function deleteSession(sessionId) {
-  if (!confirm("Eliminar este registo de escrita?")) return;
+  if (!confirm("Delete this writing log?")) return;
   try {
     const res = await fetch(`/api/sessions/${sessionId}`, {
       method: 'DELETE',
@@ -586,25 +586,25 @@ async function deleteSession(sessionId) {
       openGoalStats(state.currentGoalStats.goalId);
     }
   } catch (err) {
-    console.error('Erro ao eliminar sessão:', err);
+    console.error('Error deleting session:', err);
   }
 }
 
-// Medalhas
+// Badges Gallery
 function renderBadges(unlockedBadges = []) {
   const container = document.getElementById('badgesGrid');
   if (!container) return;
 
   const allPossibleBadges = [
-    { code: 'FIRST_SESSION', title: 'Primeiras Linhas', desc: 'Primeira sessão registada', icon: '✍️' },
-    { code: 'WORDS_5K', title: '5.000 Palavras', desc: 'Primeiro grande marco atingido', icon: '📜' },
-    { code: 'WORDS_10K', title: '10.000 Palavras', desc: 'Capítulo sólido no manuscrito', icon: '📖' },
-    { code: 'WORDS_25K', title: 'A Meio do Caminho', desc: '50% do caminho percorrido', icon: '🕯️' },
-    { code: 'WORDS_50K', title: 'Lenda NaNoWriMo', desc: '50.000 palavras atingidas!', icon: '🏆' },
-    { code: 'GOAL_COMPLETED', title: 'Meta Conquistada', desc: '100% da meta de palavras', icon: '🎉' },
-    { code: 'DAY_5K', title: 'Maratona Inspirada', desc: '5.000 palavras num só dia', icon: '⚡' },
-    { code: 'STREAK_3', title: 'Ritmo Imparável', desc: '3 dias seguidos a escrever', icon: '🔥' },
-    { code: 'STREAK_7', title: 'Hábito de Mestre', desc: '7 dias consecutivos sem falhar', icon: '👑' }
+    { code: 'FIRST_SESSION', title: 'First Lines', desc: 'First session recorded', icon: '✍️' },
+    { code: 'WORDS_5K', title: '5,000 Words', desc: 'First milestone reached', icon: '📜' },
+    { code: 'WORDS_10K', title: '10,000 Words', desc: 'Solid manuscript chapter', icon: '📖' },
+    { code: 'WORDS_25K', title: 'Halfway There', desc: '50% of the path conquered', icon: '🕯️' },
+    { code: 'WORDS_50K', title: 'NaNoWriMo Legend', desc: '50,000 words achieved!', icon: '🏆' },
+    { code: 'GOAL_COMPLETED', title: 'Goal Conquered', desc: '100% of target word count', icon: '🎉' },
+    { code: 'DAY_5K', title: 'Inspired Marathon', desc: '5,000 words in a single day', icon: '⚡' },
+    { code: 'STREAK_3', title: 'Unstoppable Flow', desc: '3 consecutive writing days', icon: '🔥' },
+    { code: 'STREAK_7', title: 'Master Habit', desc: '7 days in a row without missing', icon: '👑' }
   ];
 
   const unlockedCodes = new Set(unlockedBadges.map(b => b.code));
@@ -617,7 +617,7 @@ function renderBadges(unlockedBadges = []) {
         <div class="badge-title">${b.title}</div>
         <div class="badge-desc">${b.desc}</div>
         <div style="margin-top:6px; font-size:0.75rem; color:${isUnlocked ? '#C28B38' : '#AFA6A0'}; font-weight:bold;">
-          ${isUnlocked ? '★ Conquistada' : 'Bloqueada'}
+          ${isUnlocked ? '★ Conquered' : 'Locked'}
         </div>
       </div>
     `;
@@ -653,7 +653,7 @@ function openCreateGoalForProject(projectId) {
   const year = now.getFullYear();
   document.getElementById('goalStartDate').value = `${year}-11-01`;
   document.getElementById('goalEndDate').value = `${year}-11-30`;
-  document.getElementById('goalTitle').value = `Desafio NaNoWriMo ${year}`;
+  document.getElementById('goalTitle').value = `NaNoWriMo Challenge ${year}`;
   handleGoalUnitChange();
   openModal('modalGoal');
 }
@@ -665,16 +665,16 @@ function handleGoalUnitChange() {
   const input = document.getElementById('goalTargetCount');
 
   if (unit === 'CHAPTERS') {
-    label.textContent = "Quantos Capítulos no Total? *";
-    help.textContent = "Ex: O esboço tem 50 capítulos. O progresso será medido por capítulos!";
+    label.textContent = "How many chapters in total? *";
+    help.textContent = "e.g., The outline has 50 chapters. Progress will be measured by chapters!";
     input.value = "50";
   } else if (unit === 'PAGES') {
-    label.textContent = "Quantas Páginas no Total? *";
-    help.textContent = "Ex: Meta de 250 páginas.";
+    label.textContent = "How many pages in total? *";
+    help.textContent = "e.g., Target of 250 pages.";
     input.value = "250";
   } else {
-    label.textContent = "Número de Palavras Alvo: *";
-    help.textContent = "Ex: 50.000 palavras para o NaNoWriMo.";
+    label.textContent = "Target Number of Words: *";
+    help.textContent = "e.g., 50,000 words for NaNoWriMo.";
     input.value = "50000";
   }
 }
@@ -704,7 +704,7 @@ function updateSessionFormMode() {
 }
 
 function initFormListeners() {
-  // Fechar modais
+  // Close modals
   document.querySelectorAll('.btn-close-modal').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.target.closest('.modal-overlay')?.classList.remove('active');
@@ -716,7 +716,7 @@ function initFormListeners() {
     });
   });
 
-  // Toggles de inserção de sessão
+  // Session input toggles
   document.getElementById('radioTypeDelta')?.addEventListener('change', updateSessionFormMode);
   document.getElementById('radioTypeTotal')?.addEventListener('change', updateSessionFormMode);
 
@@ -754,16 +754,16 @@ function initFormListeners() {
         loadUserProfile();
         navigateTo('HOME');
       } else {
-        errorEl.textContent = data.error || 'Credenciais inválidas.';
+        errorEl.textContent = data.error || 'Invalid credentials.';
         errorEl.style.display = 'block';
       }
     } catch (err) {
-      errorEl.textContent = 'Erro ao conectar ao servidor.';
+      errorEl.textContent = 'Error connecting to server.';
       errorEl.style.display = 'block';
     }
   });
 
-  // 2. Submit Registo
+  // 2. Submit Register
   document.getElementById('formRegister')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const displayName = document.getElementById('regName').value.trim();
@@ -788,16 +788,16 @@ function initFormListeners() {
         loadUserProfile();
         navigateTo('HOME');
       } else {
-        errorEl.textContent = data.error || 'Erro ao criar conta.';
+        errorEl.textContent = data.error || 'Error creating account.';
         errorEl.style.display = 'block';
       }
     } catch (err) {
-      errorEl.textContent = 'Erro de conexão.';
+      errorEl.textContent = 'Connection error.';
       errorEl.style.display = 'block';
     }
   });
 
-  // 3. Submit Projeto
+  // 3. Submit Project
   document.getElementById('formProject')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const title = document.getElementById('projectTitle').value.trim();
@@ -821,11 +821,11 @@ function initFormListeners() {
         navigateTo(state.currentView === 'LIBRARY' ? 'LIBRARY' : 'HOME');
       }
     } catch (err) {
-      console.error('Erro ao criar projeto:', err);
+      console.error('Error creating project:', err);
     }
   });
 
-  // 4. Submit Meta
+  // 4. Submit Goal
   document.getElementById('formGoal')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const projectId = document.getElementById('goalProjectId').value;
@@ -858,11 +858,11 @@ function initFormListeners() {
         navigateTo(state.currentView === 'LIBRARY' ? 'LIBRARY' : 'HOME');
       }
     } catch (err) {
-      console.error('Erro ao criar meta:', err);
+      console.error('Error creating goal:', err);
     }
   });
 
-  // 5. Submit Sessão de Escrita
+  // 5. Submit Writing Session
   document.getElementById('formSession')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const goalId = document.getElementById('sessionGoalId').value;
@@ -884,14 +884,14 @@ function initFormListeners() {
     if (isDelta) {
       const wordsAdded = parseInt(document.getElementById('sessionWordsDelta').value, 10);
       if (isNaN(wordsAdded) || wordsAdded <= 0) {
-        alert("Por favor insere o número de palavras escritas.");
+        alert("Please enter the number of words written.");
         return;
       }
       payload.wordsAdded = wordsAdded;
     } else {
       const totalCount = parseInt(document.getElementById('sessionTotalCount').value, 10);
       if (isNaN(totalCount) || totalCount < 0) {
-        alert("Por favor insere a contagem total de palavras.");
+        alert("Please enter the total word count.");
         return;
       }
       payload.newTotalCount = totalCount;
@@ -915,11 +915,11 @@ function initFormListeners() {
         }
       }
     } catch (err) {
-      console.error('Erro ao gravar sessão:', err);
+      console.error('Error saving session:', err);
     }
   });
 
-  // 6. Submit Editar Perfil
+  // 6. Submit Edit Profile
   document.getElementById('formEditProfile')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const displayName = document.getElementById('profileEditName').value.trim();
@@ -940,7 +940,7 @@ function initFormListeners() {
         loadUserProfile();
       }
     } catch (err) {
-      console.error('Erro ao atualizar perfil:', err);
+      console.error('Error updating profile:', err);
     }
   });
 }

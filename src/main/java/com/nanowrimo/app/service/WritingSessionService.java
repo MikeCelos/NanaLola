@@ -31,7 +31,7 @@ public class WritingSessionService {
     @Transactional
     public WritingSession addSession(SessionRequest request) {
         Goal goal = goalRepository.findById(request.getGoalId())
-                .orElseThrow(() -> new IllegalArgumentException("Meta não encontrada com id: " + request.getGoalId()));
+                .orElseThrow(() -> new IllegalArgumentException("Goal not found with id: " + request.getGoalId()));
 
         int wordsToAdd = 0;
         if (request.getNewTotalCount() != null) {

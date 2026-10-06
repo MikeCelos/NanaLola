@@ -43,7 +43,7 @@ public class GoalController {
     @PostMapping
     public ResponseEntity<Goal> createGoal(@RequestBody GoalRequest request) {
         Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado com id: " + request.getProjectId()));
+                .orElseThrow(() -> new IllegalArgumentException("Project not found with id: " + request.getProjectId()));
 
         Goal goal = new Goal(
                 project,

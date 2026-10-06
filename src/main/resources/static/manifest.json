@@ -1,7 +1,7 @@
 {
   "name": "NanaLola Cozy Tracker",
   "short_name": "NanaLola",
-  "description": "O teu refúgio acolhedor de escrita e NaNoWriMo",
+  "description": "Your cozy writing haven and NaNoWriMo companion",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#E8D6C8",

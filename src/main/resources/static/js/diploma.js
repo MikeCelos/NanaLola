@@ -1,8 +1,8 @@
 /**
- * NaNoWriMo Cozy Tracker - Gerador de Diploma Vintage
+ * NanaLola Cozy Tracker - Vintage Certificate Generator
  */
 
-function generateDiploma(stats, authorName = "Escritor(a) Dedicado(a)") {
+function generateDiploma(stats, authorName = "Dedicated Author") {
   const canvas = document.getElementById('diplomaCanvas');
   if (!canvas || !stats) return;
 
@@ -48,13 +48,13 @@ function generateDiploma(stats, authorName = "Escritor(a) Dedicado(a)") {
 
   // Título Principal do Diploma
   ctx.fillStyle = '#2E2A28';
-  ctx.font = 'bold 52px "SimSun", "Songti SC", serif';
-  ctx.fillText('DIPLOMA DE CONQUISTA LITERÁRIA', width / 2, 190);
+  ctx.font = 'bold 50px "SimSun", "Songti SC", serif';
+  ctx.fillText('CERTIFICATE OF LITERARY ACHIEVEMENT', width / 2, 190);
 
   // Subtítulo
   ctx.fillStyle = '#B07A63';
   ctx.font = 'italic 24px "Times New Roman", serif';
-  ctx.fillText('Por este meio se certifica com honra e distinção que', width / 2, 250);
+  ctx.fillText('This is to certify with honor and distinction that', width / 2, 250);
 
   // Nome do Autor
   ctx.fillStyle = '#7A3F33';
@@ -72,19 +72,19 @@ function generateDiploma(stats, authorName = "Escritor(a) Dedicado(a)") {
   // Texto do mérito
   ctx.fillStyle = '#2E2A28';
   ctx.font = '22px "Times New Roman", serif';
-  ctx.fillText('conquistou com perseverança, café e paixão a sua meta de escrita no projeto', width / 2, 400);
+  ctx.fillText('has conquered with perseverance, warm coffee, and passion the writing goal for the project', width / 2, 400);
 
   // Título da Obra
   ctx.fillStyle = '#7A3F33';
   ctx.font = 'bold italic 36px "Times New Roman", serif';
-  const bookTitle = stats.projectTitle ? `« ${stats.projectTitle} »` : '« O Teu Grande Manuscrito »';
+  const bookTitle = stats.projectTitle ? `« ${stats.projectTitle} »` : '« Your Masterpiece »';
   ctx.fillText(bookTitle, width / 2, 460);
 
-  // Detalhe de palavras
+  // Word count details
   ctx.fillStyle = '#2E2A28';
   ctx.font = '24px "Times New Roman", serif';
-  const totalW = stats.currentWords ? stats.currentWords.toLocaleString('pt-PT') : '50.000';
-  ctx.fillText(`atingindo um grandioso total de ${totalW} palavras escritas!`, width / 2, 520);
+  const totalW = stats.currentWords ? stats.currentWords.toLocaleString('en-US') : '50,000';
+  ctx.fillText(`reaching a grand total of ${totalW} words written!`, width / 2, 520);
 
   // Selo de Cera Vintage (Wax Seal)
   drawWaxSeal(ctx, width / 2, 650, totalW);
@@ -93,11 +93,11 @@ function generateDiploma(stats, authorName = "Escritor(a) Dedicado(a)") {
   ctx.fillStyle = '#4A3E3B';
   ctx.font = 'italic 18px "Times New Roman", serif';
   ctx.textAlign = 'left';
-  const todayStr = new Date().toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
-  ctx.fillText(`Data Oficial: ${todayStr}`, 100, 750);
+  const todayStr = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  ctx.fillText(`Official Date: ${todayStr}`, 100, 750);
 
   ctx.textAlign = 'right';
-  ctx.fillText('Comité Oficial NaNoWriMo & Vibe Cozy', width - 100, 750);
+  ctx.fillText('NanaLola Official Committee & Cozy Society', width - 100, 750);
 }
 
 function drawCornerFlourish(ctx, x, y) {
@@ -135,11 +135,11 @@ function drawWaxSeal(ctx, x, y, words) {
   ctx.fillStyle = '#FFF8EE';
   ctx.textAlign = 'center';
   ctx.font = 'bold 13px "Times New Roman", serif';
-  ctx.fillText('★ VENCEDOR ★', x, y - 18);
+  ctx.fillText('★ WINNER ★', x, y - 18);
   ctx.font = 'bold 18px "SimSun", serif';
   ctx.fillText('NanaLola', x, y + 6);
   ctx.font = '12px "Times New Roman", serif';
-  ctx.fillText(`${words} PALAVRAS`, x, y + 26);
+  ctx.fillText(`${words} WORDS`, x, y + 26);
 
   ctx.restore();
 }
@@ -148,7 +148,7 @@ function downloadDiploma() {
   const canvas = document.getElementById('diplomaCanvas');
   if (!canvas) return;
   const link = document.createElement('a');
-  link.download = 'Diploma_NanaLola_Oficial.png';
+  link.download = 'NanaLola_Official_Certificate.png';
   link.href = canvas.toDataURL('image/png');
   link.click();
 }
