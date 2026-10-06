@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // PWA
 function initPwa() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
+    navigator.serviceWorker.register('/sw.js').then((reg) => {
+      reg.update();
+    }).catch(err => console.log('SW error:', err));
   }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
