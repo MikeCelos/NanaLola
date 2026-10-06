@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
 
   <!-- Estilos da Aplicação -->
-  <link rel="stylesheet" href="/css/style.css?v=2">
+  <link rel="stylesheet" href="/css/style.css?v=3">
 
   <!-- Chart.js para os Gráficos Interativos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -27,7 +27,9 @@
   <div id="viewAuth" class="view-section" style="display: none;">
     <div class="auth-container-box">
       <div style="font-size: 3rem; margin-bottom: 8px;">☕</div>
-      <h1 style="font-family: var(--font-heading); color: var(--color-espresso); font-size: 2.2rem; margin-bottom: 4px;">NanaLola</h1>
+      <h1 style="font-family: var(--font-heading); color: var(--color-espresso); font-size: 2.2rem; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        NanaLola <span class="brand-version-badge" onclick="openModal('modalCredits')" title="About & Credits">v0.1</span>
+      </h1>
       <p style="color: var(--color-cinnamon); font-style: italic; margin-bottom: 24px;">Your cozy writing haven & NaNoWriMo sanctuary</p>
 
       <div class="auth-tabs">
@@ -74,6 +76,12 @@
           Create My Author Haven 📖
         </button>
       </form>
+
+      <div style="margin-top: 22px; font-size: 0.85rem; text-align: center; color: var(--color-taupe); border-top: 1px dashed var(--color-border); padding-top: 14px;">
+        <a href="javascript:void(0)" onclick="openModal('modalCredits')" style="color: var(--color-cinnamon); text-decoration: underline; font-weight: 600;">
+          NanaLola v0.1 • Created by Francisco Vasconcelos & Ana Luísa (About & Credits 📜)
+        </a>
+      </div>
     </div>
   </div>
 
@@ -88,6 +96,7 @@
         <div class="brand-group" onclick="navigateTo('HOME')">
           <span class="brand-logo">☕</span>
           <span class="brand-name">NanaLola</span>
+          <span class="brand-version-badge" onclick="event.stopPropagation(); openModal('modalCredits')" title="Version v0.1 • Click for Credits & About">v0.1</span>
           <span class="brand-tag">Cozy Writing</span>
         </div>
 
@@ -106,6 +115,9 @@
         <div class="nav-actions">
           <button id="btnNavbarNewProject" class="btn-vintage btn-primary" onclick="openModal('modalProject')">
             + New Project
+          </button>
+          <button class="btn-vintage btn-outline" onclick="openModal('modalCredits')" title="About the creators & credits">
+            📜 Credits
           </button>
           <button id="btnInstallApp" class="btn-vintage btn-secondary" style="display: none;">
             📲 Install App
@@ -193,9 +205,14 @@
             <div class="profile-username" id="profileUsername">@author</div>
             <p class="profile-bio" id="profileBio">Crafting captivating stories with coffee and imagination...</p>
             <div id="profileDbStatus" style="margin-bottom: 14px;"></div>
-            <button class="btn-vintage btn-secondary" onclick="openEditProfileModal()">
-              ✏️ Edit Profile & Photo
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-vintage btn-secondary" onclick="openEditProfileModal()">
+                ✏️ Edit Profile & Photo
+              </button>
+              <button class="btn-vintage btn-secondary" onclick="openModal('modalCredits')">
+                📜 About & Credits
+              </button>
+            </div>
           </div>
         </div>
 
@@ -388,6 +405,21 @@
           </table>
         </div>
       </section>
+
+      <!-- App Vintage Footer -->
+      <footer class="app-vintage-footer">
+        <div class="footer-content">
+          <p>
+            ☕ <strong>NanaLola v0.1</strong> — A cozy writing haven & NaNoWriMo sanctuary.
+          </p>
+          <p class="footer-subtext">
+            Conceived by <strong>Ana Luísa</strong> (Creative Vision & Logistics) & Crafted by <strong>Francisco Vasconcelos</strong> (Software Engineer).
+          </p>
+          <button class="btn-vintage btn-secondary btn-sm" onclick="openModal('modalCredits')" style="margin-top: 10px;">
+            📜 About the Creators & Credits
+          </button>
+        </div>
+      </footer>
 
     </div>
   </div>
@@ -643,6 +675,92 @@
       </div>
       <div style="margin-top: 18px; text-align: right;">
         <button class="btn-vintage btn-primary" onclick="closeModal('modalDbHelp')">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ABOUT & CREDITS -->
+  <div id="modalCredits" class="modal-overlay">
+    <div class="modal-content vintage-border" style="max-width: 640px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 2rem;">☕</span>
+          <div>
+            <h3 style="margin: 0; line-height: 1.2;">About NanaLola</h3>
+            <span class="brand-version-badge" style="margin-top: 4px; pointer-events: none;">Version v0.1 • Cozy Haven</span>
+          </div>
+        </div>
+        <button class="btn-close-modal" onclick="closeModal('modalCredits')">&times;</button>
+      </div>
+
+      <div style="margin-top: 16px; font-size: 0.95rem; line-height: 1.6; color: var(--color-espresso);">
+        <p style="font-style: italic; color: var(--color-cinnamon); margin-bottom: 20px; text-align: center;">
+          "Every great story begins with a spark of imagination, warm coffee, and the courage to write the first word."
+        </p>
+
+        <!-- The Creators -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 22px;">
+          
+          <!-- Ana Luísa Card -->
+          <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-warm-sm);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid var(--color-cinnamon);">
+                ✨
+              </div>
+              <div>
+                <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-espresso);">Ana Luísa</h4>
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Concept & Creative Vision</div>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--color-espresso); line-height: 1.5; margin: 0;">
+              The soul and inspiration behind NanaLola. Ana conceived the original idea, envisioned what writers truly needed, defined the features and logistics, and guided the creative direction — from chapter-based goals to the warm coffeehouse atmosphere.
+            </p>
+          </div>
+
+          <!-- Francisco Vasconcelos Card -->
+          <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-warm-sm);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid var(--color-terracotta);">
+                💻
+              </div>
+              <div>
+                <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-espresso);">Francisco Vasconcelos</h4>
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Software Engineer</div>
+              </div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--color-espresso); line-height: 1.5; margin-bottom: 12px;">
+              Lead Software Engineer. Brought NanaLola to life through engineering and architecture — developing the full-stack Spring Boot platform, persistent cloud database infrastructure, PWA offline capabilities, and responsive UI.
+            </p>
+            <div style="font-size: 0.84rem; padding-top: 8px; border-top: 1px dashed var(--color-border);">
+              <span style="color: var(--color-taupe);">Contact:</span><br>
+              <a href="mailto:franciscovasconcelossasilva@gmail.com" style="color: var(--color-terracotta); font-weight: 600; text-decoration: underline; word-break: break-all;">
+                franciscovasconcelossasilva@gmail.com
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dedication Box -->
+        <div style="background: var(--color-card-bg); border-left: 4px solid var(--color-gold); border-radius: 4px; padding: 14px 16px; margin-bottom: 18px;">
+          <h5 style="margin: 0 0 6px 0; color: var(--color-espresso); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+            📜 Dedication & Credits
+          </h5>
+          <p style="font-size: 0.88rem; color: var(--color-espresso); margin: 0; line-height: 1.5;">
+            NanaLola was created as a cozy space for all storytellers, novelists, and dreamers. Whether you are aiming for 50,000 words in November or pacing your chapters gently through the seasons, this space was made for you.
+          </p>
+        </div>
+
+        <!-- Footer Info -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.82rem; color: var(--color-taupe); padding-top: 10px; border-top: 1px solid var(--color-border);">
+          <span>Version: <strong style="color: var(--color-espresso);">v0.1</strong></span>
+          <span>Crafted with Java, Spring Boot, PWA & Warm Coffee ☕</span>
+        </div>
+
+      </div>
+
+      <div style="margin-top: 20px; text-align: right;">
+        <button class="btn-vintage btn-primary" onclick="closeModal('modalCredits')">Close ☕</button>
       </div>
     </div>
   </div>

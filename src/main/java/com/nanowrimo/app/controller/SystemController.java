@@ -19,6 +19,7 @@ public class SystemController {
         boolean persistent = DatabaseConfig.isPersistentDatabaseActive();
         return ResponseEntity.ok(Map.of(
                 "status", "UP",
+                "version", "v0.1",
                 "database", DatabaseConfig.getActiveDatabaseType(),
                 "persistent", persistent,
                 "host", DatabaseConfig.getActiveDatabaseHost(),
