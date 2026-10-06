@@ -10,6 +10,7 @@ import com.nanowrimo.app.repository.ProjectRepository;
 import com.nanowrimo.app.repository.WritingSessionRepository;
 import com.nanowrimo.app.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -113,6 +114,7 @@ public class ProjectController {
     }
 
     @PostMapping
+    @Transactional
     public Project createProject(@RequestHeader(value = "Authorization", required = false) String token,
                                  @RequestBody ProjectRequest request) {
         User user = authService.getUserByToken(token);
@@ -124,7 +126,37 @@ public class ProjectController {
                 request.getSeries(),
                 request.getSynopsis()
         );
-        return projectRepository.save(project);
+        project = projectRepository.save(project);
+
+        // Automatically create initial goal with author's chosen unit (WORDS vs CHAPTERS) and target count
+        String unitStr = request.getGoalUnit() != null ? request.getGoalUnit().trim().toUpperCase() : "WORDS";
+        com.nanowrimo.app.model.GoalUnit unit = "CHAPTERS".equals(unitStr)
+                ? com.nanowrimo.app.model.GoalUnit.CHAPTERS
+                : com.nanowrimo.app.model.GoalUnit.WORDS;
+
+        int target = request.getTargetCount() != null && request.getTargetCount() > 0
+                ? request.getTargetCount()
+                : (unit == com.nanowrimo.app.model.GoalUnit.CHAPTERS ? 25 : 50000);
+
+        String goalTitle = unit == com.nanowrimo.app.model.GoalUnit.CHAPTERS
+                ? "Goal: " + target + " Chapters"
+                : "Goal: " + String.format("%,d", target) + " Words";
+
+        java.time.LocalDate startDate = java.time.LocalDate.now();
+        java.time.LocalDate endDate = startDate.plusMonths(1);
+
+        Goal initialGoal = new Goal(
+                project,
+                goalTitle,
+                com.nanowrimo.app.model.GoalType.WRITING,
+                unit,
+                target,
+                startDate,
+                endDate
+        );
+        goalRepository.save(initialGoal);
+
+        return project;
     }
 
     @PutMapping("/{id}")

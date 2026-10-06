@@ -6,6 +6,8 @@ public class ProjectRequest {
     private String genre;
     private String series;
     private String synopsis;
+    private String goalUnit;
+    private Integer targetCount;
 
     public ProjectRequest() {
     }
@@ -48,5 +50,21 @@ public class ProjectRequest {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
+    }
+
+    public String getGoalUnit() {
+        return goalUnit;
+    }
+
+    public void setGoalUnit(String goalUnit) {
+        this.goalUnit = goalUnit;
+    }
+
+    public Integer getTargetCount() {
+        return targetCount;
+    }
+
+    public void setTargetCount(Integer targetCount) {
+        this.targetCount = targetCount;
     }
 }

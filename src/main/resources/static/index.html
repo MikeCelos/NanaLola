@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
 
   <!-- Estilos da Aplicação -->
-  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link rel="stylesheet" href="/css/style.css?v=4">
 
   <!-- Chart.js para os Gráficos Interativos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -529,6 +529,36 @@
           <p class="form-help">If left blank, NanaLola crafts an embossed classic leather book cover for you!</p>
         </div>
 
+        <!-- Initial Goal / Target Setup -->
+        <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 18px;">
+          <h4 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--color-espresso); display: flex; align-items: center; gap: 6px;">
+            🎯 Book Goal & Limit
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--color-cinnamon); margin-bottom: 12px;">
+            Choose how you want to measure progress for this book: by word count limit or chapter limit.
+          </p>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="font-weight: 600;">Choose Goal Type:</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
+              <label id="labelProjectGoalWords" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--color-card-bg); border: 2px solid var(--color-terracotta); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;">
+                <input type="radio" name="projectGoalType" id="projectGoalTypeWords" value="WORDS" checked onchange="toggleProjectGoalUnit()">
+                <span>📝 Word Limit</span>
+              </label>
+              <label id="labelProjectGoalChapters" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--color-card-bg); border: 2px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;">
+                <input type="radio" name="projectGoalType" id="projectGoalTypeChapters" value="CHAPTERS" onchange="toggleProjectGoalUnit()">
+                <span>📑 Chapter Limit</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label id="labelProjectTargetCount" for="projectTargetCount" style="font-weight: 600;">Word Limit Target (How many words?): *</label>
+            <input type="number" id="projectTargetCount" class="form-input" value="50000" min="1" required placeholder="e.g., 50000 words">
+            <p id="helpProjectTargetCount" class="form-help">Default is 50,000 words (classic NaNoWriMo target).</p>
+          </div>
+        </div>
+
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
           Create Book in NanaLola 📚
         </button>
@@ -715,6 +745,9 @@
             <p style="font-size: 0.9rem; color: var(--color-espresso); line-height: 1.5; margin: 0;">
               The soul and inspiration behind NanaLola. Ana conceived the original idea, envisioned what writers truly needed, defined the features and logistics, and guided the creative direction — from chapter-based goals to the warm coffeehouse atmosphere.
             </p>
+            <div style="margin-top: 14px; font-style: italic; color: var(--color-cinnamon); font-size: 0.88rem; padding-top: 8px; border-top: 1px dashed var(--color-border);">
+              "A escrever..." ✍️
+            </div>
           </div>
 
           <!-- Francisco Vasconcelos Card -->
@@ -766,8 +799,8 @@
   </div>
 
   <!-- Scripts da Aplicação -->
-  <script src="/js/charts.js?v=3"></script>
-  <script src="/js/diploma.js?v=3"></script>
-  <script src="/js/app.js?v=3"></script>
+  <script src="/js/charts.js?v=4"></script>
+  <script src="/js/diploma.js?v=4"></script>
+  <script src="/js/app.js?v=4"></script>
 </body>
 </html>

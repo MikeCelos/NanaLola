@@ -837,6 +837,10 @@ function initFormListeners() {
     const synopsis = document.getElementById('projectSynopsis').value.trim();
     const coverUrl = document.getElementById('projectCoverUrl').value.trim();
 
+    const isChapters = document.getElementById('projectGoalTypeChapters')?.checked;
+    const goalUnit = isChapters ? 'CHAPTERS' : 'WORDS';
+    const targetCount = parseInt(document.getElementById('projectTargetCount')?.value, 10) || (isChapters ? 25 : 50000);
+
     try {
       const res = await fetch('/api/projects', {
         method: 'POST',
@@ -844,17 +848,47 @@ function initFormListeners() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${state.token}`
         },
-        body: JSON.stringify({ title, series, genre, synopsis, coverUrl })
+        body: JSON.stringify({ title, series, genre, synopsis, coverUrl, goalUnit, targetCount })
       });
       if (res.ok) {
         closeModal('modalProject');
         document.getElementById('formProject').reset();
-        navigateTo(state.currentView === 'LIBRARY' ? 'LIBRARY' : 'HOME');
+        toggleProjectGoalUnit();
+        navigateTo('HOME');
       }
     } catch (err) {
       console.error('Error creating project:', err);
     }
   });
+
+function toggleProjectGoalUnit() {
+  const isChapters = document.getElementById('projectGoalTypeChapters')?.checked;
+  const labelWords = document.getElementById('labelProjectGoalWords');
+  const labelChapters = document.getElementById('labelProjectGoalChapters');
+  const labelTarget = document.getElementById('labelProjectTargetCount');
+  const inputTarget = document.getElementById('projectTargetCount');
+  const helpTarget = document.getElementById('helpProjectTargetCount');
+
+  if (isChapters) {
+    if (labelWords) labelWords.style.borderColor = 'var(--color-border)';
+    if (labelChapters) labelChapters.style.borderColor = 'var(--color-terracotta)';
+    if (labelTarget) labelTarget.textContent = 'Chapter Limit Target (How many chapters?): *';
+    if (inputTarget) {
+      if (inputTarget.value === '50000') inputTarget.value = '25';
+      inputTarget.placeholder = 'e.g., 25 chapters';
+    }
+    if (helpTarget) helpTarget.textContent = 'Track your book progress as you complete chapters, without word count pressure.';
+  } else {
+    if (labelWords) labelWords.style.borderColor = 'var(--color-terracotta)';
+    if (labelChapters) labelChapters.style.borderColor = 'var(--color-border)';
+    if (labelTarget) labelTarget.textContent = 'Word Limit Target (How many words?): *';
+    if (inputTarget) {
+      if (inputTarget.value === '25') inputTarget.value = '50000';
+      inputTarget.placeholder = 'e.g., 50000 words';
+    }
+    if (helpTarget) helpTarget.textContent = 'Default is 50,000 words (classic NaNoWriMo target).';
+  }
+}
 
   // 4. Submit Goal
   document.getElementById('formGoal')?.addEventListener('submit', async (e) => {
