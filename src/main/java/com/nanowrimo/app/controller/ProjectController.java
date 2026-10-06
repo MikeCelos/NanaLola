@@ -2,9 +2,12 @@ package com.nanowrimo.app.controller;
 
 import com.nanowrimo.app.dto.LibraryProjectDto;
 import com.nanowrimo.app.dto.ProjectRequest;
+import com.nanowrimo.app.model.Badge;
 import com.nanowrimo.app.model.Goal;
 import com.nanowrimo.app.model.Project;
 import com.nanowrimo.app.model.User;
+import com.nanowrimo.app.model.WritingSession;
+import com.nanowrimo.app.repository.BadgeRepository;
 import com.nanowrimo.app.repository.GoalRepository;
 import com.nanowrimo.app.repository.ProjectRepository;
 import com.nanowrimo.app.repository.WritingSessionRepository;
@@ -24,15 +27,18 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final GoalRepository goalRepository;
     private final WritingSessionRepository writingSessionRepository;
+    private final BadgeRepository badgeRepository;
     private final AuthService authService;
 
     public ProjectController(ProjectRepository projectRepository,
                              GoalRepository goalRepository,
                              WritingSessionRepository writingSessionRepository,
+                             BadgeRepository badgeRepository,
                              AuthService authService) {
         this.projectRepository = projectRepository;
         this.goalRepository = goalRepository;
         this.writingSessionRepository = writingSessionRepository;
+        this.badgeRepository = badgeRepository;
         this.authService = authService;
     }
 
@@ -174,11 +180,24 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        if (projectRepository.existsById(id)) {
-            projectRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @Transactional
+    public ResponseEntity<Void> deleteProject(@RequestHeader(value = "Authorization", required = false) String token,
+                                             @PathVariable Long id) {
+        User user = authService.getUserByToken(token);
+        return projectRepository.findById(id).map(p -> {
+            if (user != null && p.getUser() != null && !p.getUser().getId().equals(user.getId())) {
+                return ResponseEntity.status(403).<Void>build();
+            }
+            List<Goal> goals = goalRepository.findByProjectIdOrderByCreatedAtDesc(id);
+            for (Goal g : goals) {
+                List<WritingSession> sessions = writingSessionRepository.findByGoalIdOrderBySessionDateDescCreatedAtDesc(g.getId());
+                writingSessionRepository.deleteAll(sessions);
+                List<Badge> badges = badgeRepository.findByGoalIdOrderByUnlockedAtAsc(g.getId());
+                badgeRepository.deleteAll(badges);
+            }
+            goalRepository.deleteAll(goals);
+            projectRepository.delete(p);
+            return ResponseEntity.noContent().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 }

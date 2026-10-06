@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NanaLola ☕ Cozy Writing Haven</title>
+  <title>NanaLola • Cozy Writing Haven</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#7A3F33">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="NanaLola">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237A3F33'/><circle cx='50' cy='50' r='42' fill='none' stroke='%23C28B38' stroke-width='2' stroke-dasharray='4 2'/><text x='50' y='65' font-size='44' text-anchor='middle' fill='%23FAF6F0' font-family='serif' font-weight='bold'>N</text></svg>">
 
   <!-- Estilos da Aplicação -->
-  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link rel="stylesheet" href="/css/style.css?v=5">
 
   <!-- Chart.js para os Gráficos Interativos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -26,7 +25,7 @@
        ========================================================================== -->
   <div id="viewAuth" class="view-section" style="display: none;">
     <div class="auth-container-box">
-      <div style="font-size: 3rem; margin-bottom: 8px;">☕</div>
+      <div style="font-size: 1.8rem; color: var(--color-terracotta); margin-bottom: 8px; letter-spacing: 2px;">❧ ✦ ☙</div>
       <h1 style="font-family: var(--font-heading); color: var(--color-espresso); font-size: 2.2rem; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 8px;">
         NanaLola <span class="brand-version-badge" onclick="openModal('modalCredits')" title="About & Credits">v0.1</span>
       </h1>
@@ -49,7 +48,7 @@
         </div>
         <div id="loginErrorMsg" style="color: var(--color-terracotta); font-size: 0.9rem; margin-bottom: 12px; display: none;"></div>
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Enter My Haven ☕
+          Enter My Haven
         </button>
       </form>
 
@@ -73,13 +72,13 @@
         </div>
         <div id="registerErrorMsg" style="color: var(--color-terracotta); font-size: 0.9rem; margin-bottom: 12px; display: none;"></div>
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Create My Author Haven 📖
+          Create Author Account
         </button>
       </form>
 
       <div style="margin-top: 22px; font-size: 0.85rem; text-align: center; color: var(--color-taupe); border-top: 1px dashed var(--color-border); padding-top: 14px;">
         <a href="javascript:void(0)" onclick="openModal('modalCredits')" style="color: var(--color-cinnamon); text-decoration: underline; font-weight: 600;">
-          NanaLola v0.1 • Created by Francisco Vasconcelos & Ana Luísa (About & Credits 📜)
+          NanaLola v0.1 • Created by Francisco Vasconcelos & Ana Luísa (About & Credits)
         </a>
       </div>
     </div>
@@ -102,13 +101,14 @@
 
         <div class="nav-links">
           <button id="navBtnHome" class="nav-btn active" onclick="navigateTo('HOME')">
-            🏠 Home
+            Home
           </button>
           <button id="navBtnLibrary" class="nav-btn" onclick="navigateTo('LIBRARY')">
-            📚 Library
+            Library
           </button>
-          <button id="navBtnProfile" class="nav-btn" onclick="navigateTo('PROFILE')">
-            👤 Profile
+          <button id="navBtnProfile" class="nav-btn nav-btn-profile" onclick="navigateTo('PROFILE')" title="Author Profile">
+            <img id="navAvatarImg" class="nav-avatar-img" src="" alt="Profile">
+            <span id="navProfileName">Profile</span>
           </button>
         </div>
 
@@ -117,13 +117,13 @@
             + New Project
           </button>
           <button class="btn-vintage btn-outline" onclick="openModal('modalCredits')" title="About the creators & credits">
-            📜 Credits
+            Credits
           </button>
           <button id="btnInstallApp" class="btn-vintage btn-secondary" style="display: none;">
-            📲 Install App
+            Install App
           </button>
           <button class="btn-vintage btn-outline" onclick="handleLogout()" title="Log out">
-            Log Out 🚪
+            Log Out
           </button>
         </div>
       </nav>
@@ -136,13 +136,13 @@
         <div class="hero-cozy">
           <div class="hero-content">
             <h1 class="app-main-title" id="homeGreetingTitle">Welcome to NanaLola!</h1>
-            <p class="app-subtitle" id="homeGreetingSubtitle">Grab a warm cup of coffee and let's bring your stories to life. ☕</p>
+            <p class="app-subtitle" id="homeGreetingSubtitle">Grab a warm cup of coffee and let's bring your stories to life.</p>
             <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
               <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">
-                📖 Start New Book
+                Start New Book
               </button>
               <button class="btn-vintage btn-secondary" onclick="navigateTo('LIBRARY')">
-                📚 Explore Full Library
+                Explore Full Library
               </button>
             </div>
           </div>
@@ -157,7 +157,7 @@
               <div class="cup-handle"></div>
               <div class="cup-saucer"></div>
             </div>
-            <span class="coffee-tagline">Write & Savor ☕</span>
+            <span class="coffee-tagline">Write & Savor</span>
           </div>
         </div>
 
@@ -198,7 +198,7 @@
         <!-- Author Presentation Card -->
         <div class="profile-card-hero">
           <div class="profile-avatar-wrapper">
-            <img id="profileAvatarImg" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✍️</text></svg>" alt="Author Avatar" class="profile-avatar-img">
+            <img id="profileAvatarImg" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23F4ECE1' stroke='%23B07A63' stroke-width='2'/><text x='50' y='60' font-size='32' text-anchor='middle' fill='%237A3F33'>✦</text></svg>" alt="Author Avatar" class="profile-avatar-img">
           </div>
           <div class="profile-info">
             <h2 id="profileDisplayName">Author Name</h2>
@@ -207,10 +207,10 @@
             <div id="profileDbStatus" style="margin-bottom: 14px;"></div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button class="btn-vintage btn-secondary" onclick="openEditProfileModal()">
-                ✏️ Edit Profile & Photo
+                Edit Profile & Photo
               </button>
               <button class="btn-vintage btn-secondary" onclick="openModal('modalCredits')">
-                📜 About & Credits
+                About & Credits
               </button>
             </div>
           </div>
@@ -222,25 +222,25 @@
         </div>
         <div class="profile-stats-grid">
           <div class="profile-stat-box">
-            <div class="stat-icon">📜</div>
+            <div class="stat-icon-mark">✦</div>
             <div class="stat-val" id="profileTotalWords">0</div>
             <div class="stat-lbl">Total Words Written</div>
           </div>
 
           <div class="profile-stat-box">
-            <div class="stat-icon">🏆</div>
+            <div class="stat-icon-mark">★</div>
             <div class="stat-val" id="profileBestRecord">0</div>
             <div class="stat-lbl">All-Time Daily Record</div>
           </div>
 
           <div class="profile-stat-box">
-            <div class="stat-icon">📚</div>
+            <div class="stat-icon-mark">§</div>
             <div class="stat-val" id="profileTotalProjects">0</div>
             <div class="stat-lbl">Books Created</div>
           </div>
 
           <div class="profile-stat-box">
-            <div class="stat-icon">🎓</div>
+            <div class="stat-icon-mark">❦</div>
             <div class="stat-val" id="profileCompletedGoals">0</div>
             <div class="stat-lbl">Goals Conquered with Distinction</div>
           </div>
@@ -257,10 +257,10 @@
           </button>
           <div style="display: flex; gap: 8px;">
             <button class="btn-vintage btn-secondary" id="btnArchiveCurrentGoal">
-              📦 Archive Goal
+              Archive Goal
             </button>
             <button class="btn-vintage btn-primary" onclick="openSessionModalForActiveGoal()">
-              ✍️ Log Writing Session
+              Log Writing Session
             </button>
           </div>
         </div>
@@ -275,14 +275,14 @@
             <p class="app-subtitle" id="goalDetailMeta">Series • Genre</p>
           </div>
           <div class="coffee-cup-container">
-            <div style="font-size: 2.8rem; line-height: 1;">📖</div>
+            <div style="font-size: 2.2rem; color: var(--color-cinnamon); line-height: 1;">❧</div>
           </div>
         </div>
 
         <!-- Mood & Quote Banner -->
         <div class="mood-banner">
           <div class="mood-info">
-            <div class="mood-emoji-large" id="moodEmoji">☕📖</div>
+            <div class="mood-emoji-large" id="moodEmoji" style="font-size: 2rem; color: var(--color-terracotta);">✦</div>
             <div class="mood-texts">
               <h4 id="moodTitle">Cozy Flow</h4>
               <p id="moodText">Grab a cup of coffee and write a few more lines.</p>
@@ -295,10 +295,10 @@
 
         <!-- Celebration Box -->
         <div id="celebrationBox" class="celebration-box">
-          <h2 style="font-size: 2rem; color: var(--color-terracotta); margin-bottom: 8px;">🎉 GOAL CONQUERED! CONGRATULATIONS! 🏆</h2>
+          <h2 style="font-size: 1.85rem; color: var(--color-terracotta); margin-bottom: 8px;">Goal Conquered • Congratulations!</h2>
           <p style="font-size: 1.15rem; margin-bottom: 18px; color: #55443F;">You have successfully accomplished your writing target!</p>
-          <button id="btnOpenDiploma" class="btn-vintage btn-primary" style="font-size: 1.1rem; padding: 12px 26px;">
-            🎓 View & Download Your Official NanaLola Certificate
+          <button id="btnOpenDiploma" class="btn-vintage btn-primary" style="font-size: 1.05rem; padding: 12px 24px;">
+            View & Download Official Certificate
           </button>
         </div>
 
@@ -332,7 +332,7 @@
           </div>
 
           <div class="metric-card">
-            <span id="recordBadge" class="record-badge" style="display: none;">RECORD! 🏆</span>
+            <span id="recordBadge" class="record-badge" style="display: none;">RECORD!</span>
             <div class="metric-title">Best Day</div>
             <div class="metric-value" id="metricBestDay">0</div>
             <div class="metric-sub">Peak single-day output</div>
@@ -347,7 +347,7 @@
           <div class="metric-card">
             <div class="metric-title">Writing Streak</div>
             <div class="metric-value" id="metricStreak">0 days</div>
-            <div class="metric-sub">Consecutive writing days 🔥</div>
+            <div class="metric-sub">Consecutive writing days</div>
           </div>
         </div>
 
@@ -410,13 +410,13 @@
       <footer class="app-vintage-footer">
         <div class="footer-content">
           <p>
-            ☕ <strong>NanaLola v0.1</strong> — A cozy writing haven & NaNoWriMo sanctuary.
+            <strong>NanaLola v0.1</strong> — A cozy writing haven & NaNoWriMo sanctuary.
           </p>
           <p class="footer-subtext">
             Conceived by <strong>Ana Luísa</strong> (Creative Vision & Logistics) & Crafted by <strong>Francisco Vasconcelos</strong> (Software Engineer).
           </p>
           <button class="btn-vintage btn-secondary btn-sm" onclick="openModal('modalCredits')" style="margin-top: 10px;">
-            📜 About the Creators & Credits
+            About the Creators & Credits
           </button>
         </div>
       </footer>
@@ -432,7 +432,7 @@
   <div id="modalSession" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>☕ Log Writing Session</h3>
+        <h3>Log Writing Session</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
       <form id="formSession">
@@ -488,7 +488,7 @@
         </div>
 
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Save Session to Book ✍️
+          Save Session to Book
         </button>
       </form>
     </div>
@@ -498,7 +498,7 @@
   <div id="modalProject" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>📖 Create New Book / Project</h3>
+        <h3>Create New Book</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
       <form id="formProject">
@@ -532,7 +532,7 @@
         <!-- Initial Goal / Target Setup -->
         <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 18px;">
           <h4 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--color-espresso); display: flex; align-items: center; gap: 6px;">
-            🎯 Book Goal & Limit
+            Book Goal & Limit
           </h4>
           <p style="font-size: 0.85rem; color: var(--color-cinnamon); margin-bottom: 12px;">
             Choose how you want to measure progress for this book: by word count limit or chapter limit.
@@ -543,11 +543,11 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
               <label id="labelProjectGoalWords" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--color-card-bg); border: 2px solid var(--color-terracotta); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;">
                 <input type="radio" name="projectGoalType" id="projectGoalTypeWords" value="WORDS" checked onchange="toggleProjectGoalUnit()">
-                <span>📝 Word Limit</span>
+                <span>Word Limit</span>
               </label>
               <label id="labelProjectGoalChapters" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--color-card-bg); border: 2px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;">
                 <input type="radio" name="projectGoalType" id="projectGoalTypeChapters" value="CHAPTERS" onchange="toggleProjectGoalUnit()">
-                <span>📑 Chapter Limit</span>
+                <span>Chapter Limit</span>
               </label>
             </div>
           </div>
@@ -560,7 +560,7 @@
         </div>
 
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Create Book in NanaLola 📚
+          Create Book
         </button>
       </form>
     </div>
@@ -570,7 +570,7 @@
   <div id="modalGoal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>🎯 Set New Goal</h3>
+        <h3>Set New Goal</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
 
@@ -613,17 +613,17 @@
         </div>
 
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Save Goal 🎯
+          Save Goal
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: EDIT PROFILE -->
+  <!-- MODAL: EDIT PROFILE & AVATAR PICKER -->
   <div id="modalEditProfile" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 620px;">
       <div class="modal-header">
-        <h3>👤 Edit Author Profile</h3>
+        <h3>Edit Author Profile</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
       <form id="formEditProfile">
@@ -631,18 +631,56 @@
           <label for="profileEditName">Author Name:</label>
           <input type="text" id="profileEditName" class="form-input" required>
         </div>
+
+        <!-- Curated Avatar Picker -->
         <div class="form-group">
-          <label for="profileEditAvatar">Profile Photo Link (URL):</label>
-          <input type="url" id="profileEditAvatar" class="form-input" placeholder="https://example.com/photo.jpg">
+          <label>Choose Your Author Avatar:</label>
+          <div id="avatarPickerGrid" class="avatar-picker-grid">
+            <!-- Dynamically populated via JS -->
+          </div>
+          <input type="hidden" id="profileEditAvatar">
         </div>
+
+        <div class="form-group">
+          <label for="profileEditCustomAvatar">Or Custom Photo Link (URL):</label>
+          <input type="url" id="profileEditCustomAvatar" class="form-input" placeholder="https://example.com/photo.jpg" oninput="handleCustomAvatarInput(this.value)">
+          <p class="form-help">Selecting an avatar above automatically applies it. You can also paste your own image URL here.</p>
+        </div>
+
         <div class="form-group">
           <label for="profileEditBio">Bio / Writing Motto:</label>
           <textarea id="profileEditBio" class="form-textarea" rows="3" placeholder="Share your writing journey or quote..."></textarea>
         </div>
         <button type="submit" class="btn-vintage btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
-          Save Profile ✨
+          Save Profile
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL: DELETE PROJECT CONFIRMATION -->
+  <div id="modalDeleteProject" class="modal-overlay">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="color: var(--color-terracotta);">Delete Book</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalDeleteProject')">&times;</button>
+      </div>
+      <div style="padding: 16px 0;">
+        <p style="margin-bottom: 12px; font-size: 1.02rem; color: var(--color-espresso);">
+          Are you sure you want to delete <strong id="deleteProjectTitle">this book</strong>?
+        </p>
+        <div style="background: rgba(122, 63, 51, 0.08); border-left: 4px solid var(--color-terracotta); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--color-espresso); line-height: 1.5;">
+          <strong>Warning:</strong> This will permanently delete the manuscript project along with all associated goals, writing sessions, and badges. This action cannot be reversed.
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
+        <button type="button" class="btn-vintage btn-secondary" onclick="closeModal('modalDeleteProject')">
+          Keep Book
+        </button>
+        <button type="button" id="btnConfirmDeleteProject" class="btn-vintage btn-danger" onclick="executeDeleteProject()">
+          Yes, Delete Book
+        </button>
+      </div>
     </div>
   </div>
 
@@ -650,16 +688,16 @@
   <div id="modalDiploma" class="modal-overlay">
     <div class="modal-content" style="max-width: 860px;">
       <div class="modal-header">
-        <h3>🎓 Official Certificate of Literary Achievement</h3>
+        <h3>Official Certificate of Literary Achievement</h3>
         <button class="btn-close-modal">&times;</button>
       </div>
       <canvas id="diplomaCanvas"></canvas>
       <div style="display: flex; gap: 12px; margin-top: 14px;">
         <button id="btnDownloadDiploma" class="btn-vintage btn-primary" style="flex: 1; justify-content: center;">
-          💾 Download Certificate (PNG)
+          Download Certificate (PNG)
         </button>
         <button onclick="window.print()" class="btn-vintage btn-secondary" style="flex: 1; justify-content: center;">
-          🖨️ Print
+          Print
         </button>
       </div>
     </div>
@@ -669,7 +707,7 @@
   <div id="modalDbHelp" class="modal-overlay">
     <div class="modal-content" style="max-width: 580px;">
       <div class="modal-header">
-        <h3>☁️ Free Database Setup (Never Lose Accounts)</h3>
+        <h3>Database & Cloud Setup (Permanent Accounts)</h3>
         <button class="btn-close-modal" onclick="closeModal('modalDbHelp')">&times;</button>
       </div>
       <div style="font-size: 0.95rem; line-height: 1.6; margin-top: 12px; color: var(--color-espresso);">
@@ -700,7 +738,7 @@
         </div>
 
         <p style="color: #2e7d32; font-weight: 600; margin-top: 10px;">
-          ✨ Render will automatically restart, and all your accounts and books will be permanently stored in the cloud!
+          Render will automatically restart, and all your accounts and books will be permanently stored in the cloud!
         </p>
       </div>
       <div style="margin-top: 18px; text-align: right;">
@@ -714,7 +752,7 @@
     <div class="modal-content vintage-border" style="max-width: 640px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <span style="font-size: 2rem;">☕</span>
+          <div style="font-size: 1.6rem; color: var(--color-terracotta);">✦</div>
           <div>
             <h3 style="margin: 0; line-height: 1.2;">About NanaLola</h3>
             <span class="brand-version-badge" style="margin-top: 4px; pointer-events: none;">Version v0.1 • Cozy Haven</span>
@@ -734,8 +772,8 @@
           <!-- Ana Luísa Card -->
           <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-warm-sm);">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid var(--color-cinnamon);">
-                ✨
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: bold; color: var(--color-terracotta); border: 2px solid var(--color-cinnamon);">
+                AL
               </div>
               <div>
                 <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-espresso);">Ana Luísa</h4>
@@ -746,15 +784,15 @@
               The soul and inspiration behind NanaLola. Ana conceived the original idea, envisioned what writers truly needed, defined the features and logistics, and guided the creative direction — from chapter-based goals to the warm coffeehouse atmosphere.
             </p>
             <div style="margin-top: 14px; font-style: italic; color: var(--color-cinnamon); font-size: 0.88rem; padding-top: 8px; border-top: 1px dashed var(--color-border);">
-              "A escrever..." ✍️
+              "A escrever..."
             </div>
           </div>
 
           <!-- Francisco Vasconcelos Card -->
           <div style="background: var(--color-parchment); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-warm-sm);">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 2px solid var(--color-terracotta);">
-                💻
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: #E8D6C8; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: bold; color: var(--color-terracotta); border: 2px solid var(--color-terracotta);">
+                FV
               </div>
               <div>
                 <h4 style="margin: 0; font-size: 1.15rem; color: var(--color-espresso);">Francisco Vasconcelos</h4>
@@ -777,7 +815,7 @@
         <!-- Dedication Box -->
         <div style="background: var(--color-card-bg); border-left: 4px solid var(--color-gold); border-radius: 4px; padding: 14px 16px; margin-bottom: 18px;">
           <h5 style="margin: 0 0 6px 0; color: var(--color-espresso); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-            📜 Dedication & Credits
+            Dedication & Credits
           </h5>
           <p style="font-size: 0.88rem; color: var(--color-espresso); margin: 0; line-height: 1.5;">
             NanaLola was created as a cozy space for all storytellers, novelists, and dreamers. Whether you are aiming for 50,000 words in November or pacing your chapters gently through the seasons, this space was made for you.
@@ -787,20 +825,20 @@
         <!-- Footer Info -->
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.82rem; color: var(--color-taupe); padding-top: 10px; border-top: 1px solid var(--color-border);">
           <span>Version: <strong style="color: var(--color-espresso);">v0.1</strong></span>
-          <span>Crafted with Java, Spring Boot, PWA & Warm Coffee ☕</span>
+          <span>Crafted with Java, Spring Boot & Warm Coffee</span>
         </div>
 
       </div>
 
       <div style="margin-top: 20px; text-align: right;">
-        <button class="btn-vintage btn-primary" onclick="closeModal('modalCredits')">Close ☕</button>
+        <button class="btn-vintage btn-primary" onclick="closeModal('modalCredits')">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Scripts da Aplicação -->
-  <script src="/js/charts.js?v=4"></script>
-  <script src="/js/diploma.js?v=4"></script>
-  <script src="/js/app.js?v=4"></script>
+  <script src="/js/charts.js?v=5"></script>
+  <script src="/js/diploma.js?v=5"></script>
+  <script src="/js/app.js?v=5"></script>
 </body>
 </html>

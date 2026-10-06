@@ -1,5 +1,5 @@
 // Service Worker for NanaLola Cozy App
-const CACHE_NAME = 'nanalola-v4';
+const CACHE_NAME = 'nanalola-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

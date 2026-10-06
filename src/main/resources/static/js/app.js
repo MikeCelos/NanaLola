@@ -14,6 +14,66 @@ let state = {
   deferredPrompt: null
 };
 
+// Curated Vintage Avatar Presets (Palette: #7A3F33, #B07A63, #E8D6C8, #2E2A28, #FAF6F0)
+const AVATAR_PRESETS = [
+  {
+    id: 'quill',
+    name: 'Quill & Ink',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F4ECE1" stroke="#B07A63" stroke-width="3"/><path d="M30 72 L36 58 L64 58 L70 72 Z" fill="#2E2A28"/><rect x="42" y="52" width="16" height="6" rx="2" fill="#7A3F33"/><ellipse cx="50" cy="52" rx="7" ry="2" fill="#FAF6F0" opacity="0.3"/><path d="M47 54 Q42 36 68 18 Q60 30 52 46 Z" fill="#7A3F33"/><path d="M48 54 Q56 36 68 18" stroke="#C28B38" stroke-width="1.5" fill="none"/><polygon points="46,55 52,55 49,63" fill="#C28B38"/><circle cx="49" cy="67" r="1.5" fill="#2E2A28"/></svg>`
+  },
+  {
+    id: 'coffee',
+    name: 'Porcelain Cup',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FAF6F0" stroke="#B07A63" stroke-width="3"/><ellipse cx="50" cy="74" rx="30" ry="6" fill="#7A3F33"/><ellipse cx="50" cy="73" rx="26" ry="4" fill="#B07A63"/><path d="M64 48 C76 48 76 64 64 64" fill="none" stroke="#B07A63" stroke-width="4" stroke-linecap="round"/><path d="M30 42 L34 68 Q50 72 66 68 L70 42 Z" fill="#E8D6C8" stroke="#7A3F33" stroke-width="2"/><ellipse cx="50" cy="42" rx="20" ry="5" fill="#2E2A28"/><path d="M50 43 C48 40 44 41 44 43 C44 45 50 46.5 50 46.5 C50 46.5 56 45 56 43 C56 41 52 40 50 43 Z" fill="#FAF6F0"/><path d="M42 34 Q39 26 43 20" fill="none" stroke="#B07A63" stroke-width="2" stroke-linecap="round" opacity="0.6"/><path d="M50 32 Q54 24 50 16" fill="none" stroke="#7A3F33" stroke-width="2" stroke-linecap="round" opacity="0.8"/><path d="M58 34 Q55 26 59 20" fill="none" stroke="#B07A63" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg>`
+  },
+  {
+    id: 'typewriter',
+    name: 'Typewriter',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F4ECE1" stroke="#B07A63" stroke-width="3"/><rect x="36" y="20" width="28" height="26" rx="1" fill="#FAF6F0" stroke="#AFA6A0" stroke-width="1"/><line x1="40" y1="26" x2="60" y2="26" stroke="#B07A63" stroke-width="1"/><line x1="40" y1="31" x2="56" y2="31" stroke="#B07A63" stroke-width="1"/><line x1="40" y1="36" x2="60" y2="36" stroke="#B07A63" stroke-width="1"/><rect x="26" y="42" width="48" height="8" rx="3" fill="#7A3F33"/><circle cx="25" cy="46" r="3" fill="#C28B38"/><circle cx="75" cy="46" r="3" fill="#C28B38"/><path d="M22 52 L26 76 L74 76 L78 52 Z" fill="#2E2A28"/><rect x="30" y="58" width="40" height="14" rx="2" fill="#3D3734"/><circle cx="36" cy="62" r="2" fill="#E8D6C8"/><circle cx="43" cy="62" r="2" fill="#E8D6C8"/><circle cx="50" cy="62" r="2" fill="#E8D6C8"/><circle cx="57" cy="62" r="2" fill="#E8D6C8"/><circle cx="64" cy="62" r="2" fill="#E8D6C8"/><circle cx="39" cy="68" r="2" fill="#C28B38"/><circle cx="46" cy="68" r="2" fill="#C28B38"/><circle cx="53" cy="68" r="2" fill="#C28B38"/><circle cx="60" cy="68" r="2" fill="#C28B38"/></svg>`
+  },
+  {
+    id: 'book',
+    name: 'Gilded Tome',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FAF6F0" stroke="#B07A63" stroke-width="3"/><rect x="28" y="24" width="44" height="54" rx="3" fill="#7A3F33" stroke="#5C2C24" stroke-width="1.5"/><rect x="28" y="24" width="7" height="54" rx="1" fill="#5C2C24"/><rect x="39" y="28" width="30" height="46" rx="2" fill="none" stroke="#C28B38" stroke-width="1.5" stroke-dasharray="2 1"/><polygon points="54,46 58,52 54,58 50,52" fill="#C28B38"/><path d="M51 24 L51 40 L54 36 L57 40 L57 24" fill="#C28B38"/><rect x="69" y="27" width="4" height="48" fill="#E8D6C8"/></svg>`
+  },
+  {
+    id: 'cat',
+    name: 'Literary Cat',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F4ECE1" stroke="#B07A63" stroke-width="3"/><rect x="22" y="68" width="56" height="10" rx="2" fill="#7A3F33"/><rect x="74" y="70" width="3" height="6" fill="#E8D6C8"/><rect x="26" y="58" width="48" height="10" rx="2" fill="#B07A63"/><rect x="70" y="60" width="3" height="6" fill="#E8D6C8"/><ellipse cx="48" cy="48" rx="18" ry="12" fill="#E8D6C8" stroke="#7A3F33" stroke-width="1.5"/><circle cx="34" cy="44" r="9" fill="#E8D6C8" stroke="#7A3F33" stroke-width="1.5"/><polygon points="27,38 31,31 35,37" fill="#7A3F33"/><polygon points="34,36 39,30 41,37" fill="#7A3F33"/><path d="M30 45 Q33 48 36 45" fill="none" stroke="#2E2A28" stroke-width="1.2" stroke-linecap="round"/><path d="M64 52 Q68 46 64 42" fill="none" stroke="#7A3F33" stroke-width="3" stroke-linecap="round"/></svg>`
+  },
+  {
+    id: 'spectacles',
+    name: 'Spectacles',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FAF6F0" stroke="#B07A63" stroke-width="3"/><g transform="rotate(-6 50 50)"><rect x="24" y="24" width="52" height="52" rx="2" fill="#F4ECE1" stroke="#D9C5B4" stroke-width="1.5"/><line x1="30" y1="34" x2="70" y2="34" stroke="#AFA6A0" stroke-width="1.2"/><line x1="30" y1="42" x2="66" y2="42" stroke="#AFA6A0" stroke-width="1.2"/><line x1="30" y1="50" x2="70" y2="50" stroke="#AFA6A0" stroke-width="1.2"/><line x1="30" y1="58" x2="58" y2="58" stroke="#AFA6A0" stroke-width="1.2"/></g><g transform="rotate(8 50 50)"><circle cx="40" cy="50" r="10" fill="none" stroke="#C28B38" stroke-width="2.5"/><circle cx="60" cy="50" r="10" fill="none" stroke="#C28B38" stroke-width="2.5"/><path d="M49 48 Q50 46 51 48" fill="none" stroke="#C28B38" stroke-width="2.5"/><path d="M30 50 L20 46" fill="none" stroke="#C28B38" stroke-width="2" stroke-linecap="round"/><path d="M70 50 L80 46" fill="none" stroke="#C28B38" stroke-width="2" stroke-linecap="round"/></g></svg>`
+  },
+  {
+    id: 'seal',
+    name: 'Wax Seal',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F4ECE1" stroke="#B07A63" stroke-width="3"/><circle cx="50" cy="50" r="32" fill="#7A3F33"/><circle cx="50" cy="50" r="27" fill="#663228"/><circle cx="50" cy="50" r="25" fill="none" stroke="#C28B38" stroke-width="1.5" stroke-dasharray="3 1.5"/><path d="M48 35 Q44 48 55 58 Q50 51 51 35 Z" fill="#C28B38"/><circle cx="50" cy="62" r="2" fill="#C28B38"/><path d="M39 50 Q43 56 46 50" fill="none" stroke="#C28B38" stroke-width="1.5" stroke-linecap="round"/><path d="M54 50 Q57 56 61 50" fill="none" stroke="#C28B38" stroke-width="1.5" stroke-linecap="round"/></svg>`
+  },
+  {
+    id: 'candle',
+    name: 'Night Candle',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#2E2A28" stroke="#7A3F33" stroke-width="3"/><ellipse cx="50" cy="74" rx="22" ry="6" fill="#C28B38"/><path d="M44 74 L46 62 L54 62 L56 74 Z" fill="#B07A63"/><path d="M66 70 C74 70 74 76 66 76" fill="none" stroke="#C28B38" stroke-width="3" stroke-linecap="round"/><rect x="46" y="38" width="8" height="24" rx="2" fill="#FAF6F0"/><path d="M46 42 Q45 46 46 48" fill="none" stroke="#E8D6C8" stroke-width="1.5"/><line x1="50" y1="38" x2="50" y2="33" stroke="#2E2A28" stroke-width="1.5"/><circle cx="50" cy="27" r="14" fill="#C28B38" opacity="0.25"/><path d="M50 18 Q55 26 50 32 Q45 26 50 18 Z" fill="#C28B38"/><path d="M50 23 Q52 27 50 30 Q48 27 50 23 Z" fill="#FAF6F0"/></svg>`
+  }
+];
+
+function getPresetDataUrl(svg) {
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+function updateNavProfile(user) {
+  const avatarImg = document.getElementById('navAvatarImg');
+  const nameSpan = document.getElementById('navProfileName');
+  const defaultUrl = getPresetDataUrl(AVATAR_PRESETS[0].svg);
+  if (avatarImg) {
+    avatarImg.src = (user && user.avatarUrl) ? user.avatarUrl : defaultUrl;
+  }
+  if (nameSpan) {
+    nameSpan.textContent = (user && (user.displayName || user.username)) ? (user.displayName || user.username) : 'Profile';
+  }
+}
+
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   initPwa();
@@ -81,7 +141,8 @@ function showMainApp() {
   document.getElementById('mainAppWrapper').style.display = 'block';
 
   const name = state.currentUser?.displayName || state.currentUser?.username || 'Writer';
-  document.getElementById('homeGreetingTitle').textContent = `Welcome, ${name}! ☕`;
+  document.getElementById('homeGreetingTitle').textContent = `Welcome, ${name}!`;
+  updateNavProfile(state.currentUser);
 }
 
 function switchAuthTab(tab) {
@@ -96,6 +157,7 @@ function handleLogout() {
   localStorage.removeItem('nanalola_token');
   state.token = null;
   state.currentUser = null;
+  updateNavProfile(null);
   showAuthView();
 }
 
@@ -151,7 +213,7 @@ async function loadActiveProjects() {
     if (projects.length === 0) {
       container.innerHTML = `
         <div style="grid-column: 1 / -1; background: var(--color-card-bg); border: 2px dashed var(--color-border); border-radius: var(--radius-md); padding: 36px; text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 8px;">📖</div>
+          <div style="font-size: 2rem; color: var(--color-cinnamon); margin-bottom: 8px;">❧</div>
           <h3 style="font-size: 1.3rem; margin-bottom: 6px;">No active projects yet!</h3>
           <p style="color: var(--color-taupe); margin-bottom: 16px;">Begin your novel or launch a new NaNoWriMo challenge now.</p>
           <button class="btn-vintage btn-primary" onclick="openModal('modalProject')">+ Start New Book</button>
@@ -185,11 +247,14 @@ async function loadActiveProjects() {
         <div class="active-project-card">
           <div>
             <div class="project-card-top">
+              <button class="project-card-delete-btn" onclick="confirmDeleteProject(${p.id}, '${escapeHtml(p.title)}')" title="Delete this book">
+                Delete
+              </button>
               <div class="book-cover-thumbnail">${coverHtml}</div>
-              <div class="project-card-info">
+              <div class="project-card-info" style="padding-right: 50px;">
                 <h3>${escapeHtml(p.title)}</h3>
                 <div class="project-card-meta">${escapeHtml(seriesGenre || 'Literary Fiction')}</div>
-                ${g ? `<span class="goal-tag">🎯 ${escapeHtml(g.title)}</span>` : ''}
+                ${g ? `<span class="goal-tag">${escapeHtml(g.title)}</span>` : ''}
               </div>
             </div>
 
@@ -208,10 +273,10 @@ async function loadActiveProjects() {
           <div class="project-card-actions">
             ${g ? `
               <button class="btn-vintage btn-primary" style="flex: 1; justify-content: center;" onclick="openSessionModalForGoal(${g.id})">
-                ✍️ Write
+                Write
               </button>
               <button class="btn-vintage btn-secondary" style="flex: 1; justify-content: center;" onclick="openGoalStats(${g.id})">
-                📊 Metrics
+                Metrics
               </button>
             ` : `
               <button class="btn-vintage btn-primary" style="width: 100%; justify-content: center;" onclick="openCreateGoalForProject(${p.id})">
@@ -225,6 +290,43 @@ async function loadActiveProjects() {
 
   } catch (err) {
     console.error('Error loading active projects:', err);
+  }
+}
+
+// Project Deletion Logic
+let projectToDeleteId = null;
+
+function confirmDeleteProject(projectId, projectTitle) {
+  projectToDeleteId = projectId;
+  const titleEl = document.getElementById('deleteProjectTitle');
+  if (titleEl) titleEl.textContent = `"${projectTitle}"`;
+  openModal('modalDeleteProject');
+}
+
+async function executeDeleteProject() {
+  if (!projectToDeleteId) return;
+  try {
+    const res = await fetch(`/api/projects/${projectToDeleteId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${state.token}` }
+    });
+    if (res.ok || res.status === 204) {
+      closeModal('modalDeleteProject');
+      projectToDeleteId = null;
+      if (state.currentView === 'GOAL_DETAILS') {
+        navigateTo('HOME');
+      } else if (state.currentView === 'LIBRARY') {
+        loadLibrary();
+      } else {
+        loadActiveProjects();
+      }
+      loadUserProfile();
+    } else {
+      alert('Failed to delete book. Please try again.');
+    }
+  } catch (err) {
+    console.error('Error deleting project:', err);
+    alert('Connection error while deleting book.');
   }
 }
 
@@ -278,7 +380,7 @@ async function loadLibrary() {
       html += `
         <div class="series-section">
           <div class="series-header">
-            <h3>📚 Series: <em>${escapeHtml(seriesName)}</em></h3>
+            <h3>Series: <em>${escapeHtml(seriesName)}</em></h3>
             <span class="chart-badge">${books.length} ${books.length === 1 ? 'Book' : 'Books'} in Saga</span>
           </div>
           <div class="library-books-grid">
@@ -293,7 +395,7 @@ async function loadLibrary() {
       html += `
         <div class="series-section">
           <div class="series-header">
-            <h3>📖 Stand-Alone Books & Single Stories</h3>
+            <h3>Stand-Alone Books & Single Stories</h3>
             <span class="chart-badge">${standaloneBooks.length} Books</span>
           </div>
           <div class="library-books-grid">
@@ -334,7 +436,7 @@ function renderLibraryBookCard(item) {
         ${activeG ? `
           <div class="goal-item-row is-active" onclick="openGoalStats(${activeG.id})">
             <div>
-              <strong>🎯 ${escapeHtml(activeG.title)}</strong>
+              <strong>${escapeHtml(activeG.title)}</strong>
               <div style="font-size: 0.78rem; color: var(--color-terracotta);">Active Goal in Progress</div>
             </div>
             <span style="font-size: 0.85rem; font-weight: bold; color: var(--color-terracotta);">View ➔</span>
@@ -351,7 +453,7 @@ function renderLibraryBookCard(item) {
             ${archivedGoals.map(ag => `
               <div class="goal-item-row is-archived" onclick="openGoalStats(${ag.id})">
                 <div>
-                  <span>📦 ${escapeHtml(ag.title)}</span>
+                  <span>${escapeHtml(ag.title)}</span>
                   <div style="font-size: 0.75rem; color: var(--color-taupe);">Archived / Completed Goal</div>
                 </div>
                 <span style="font-size: 0.82rem; color: var(--color-taupe);">Stats ➔</span>
@@ -360,13 +462,76 @@ function renderLibraryBookCard(item) {
           </div>
         ` : ''}
       </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--color-border);">
+        <button class="btn-ghost-delete" onclick="confirmDeleteProject(${p.id}, '${escapeHtml(p.title)}')" title="Delete this book">
+          Delete Book
+        </button>
+      </div>
     </div>
   `;
 }
 
 // ==========================================================================
-// 3. AUTHOR PROFILE
+// 3. AUTHOR PROFILE & AVATARS
 // ==========================================================================
+let selectedAvatarUrl = '';
+
+function renderAvatarPicker(currentAvatarUrl) {
+  const grid = document.getElementById('avatarPickerGrid');
+  if (!grid) return;
+
+  const defaultUrl = getPresetDataUrl(AVATAR_PRESETS[0].svg);
+  selectedAvatarUrl = currentAvatarUrl || defaultUrl;
+
+  grid.innerHTML = AVATAR_PRESETS.map((preset) => {
+    const dataUrl = getPresetDataUrl(preset.svg);
+    const isSelected = selectedAvatarUrl === dataUrl;
+    return `
+      <div class="avatar-option-item ${isSelected ? 'selected' : ''}" onclick="selectAvatarPreset('${preset.id}')" data-avatar-id="${preset.id}">
+        <div class="avatar-option-check">✓</div>
+        <img src="${dataUrl}" class="avatar-option-img" alt="${preset.name}">
+        <span class="avatar-option-name">${preset.name}</span>
+      </div>
+    `;
+  }).join('');
+
+  const hiddenInput = document.getElementById('profileEditAvatar');
+  if (hiddenInput) hiddenInput.value = selectedAvatarUrl;
+
+  const customInput = document.getElementById('profileEditCustomAvatar');
+  if (customInput) {
+    const isPreset = AVATAR_PRESETS.some(p => getPresetDataUrl(p.svg) === currentAvatarUrl);
+    customInput.value = (!isPreset && currentAvatarUrl && !currentAvatarUrl.startsWith('data:image/svg')) ? currentAvatarUrl : '';
+  }
+}
+
+function selectAvatarPreset(presetId) {
+  const preset = AVATAR_PRESETS.find(p => p.id === presetId);
+  if (!preset) return;
+  const dataUrl = getPresetDataUrl(preset.svg);
+  selectedAvatarUrl = dataUrl;
+
+  document.querySelectorAll('.avatar-option-item').forEach(el => {
+    el.classList.toggle('selected', el.getAttribute('data-avatar-id') === presetId);
+  });
+
+  const hiddenInput = document.getElementById('profileEditAvatar');
+  if (hiddenInput) hiddenInput.value = dataUrl;
+
+  const customInput = document.getElementById('profileEditCustomAvatar');
+  if (customInput) customInput.value = '';
+}
+
+function handleCustomAvatarInput(val) {
+  if (val && val.trim().length > 5) {
+    selectedAvatarUrl = val.trim();
+    document.querySelectorAll('.avatar-option-item').forEach(el => el.classList.remove('selected'));
+    const hiddenInput = document.getElementById('profileEditAvatar');
+    if (hiddenInput) hiddenInput.value = selectedAvatarUrl;
+  }
+}
+
 async function loadUserProfile() {
   try {
     const res = await fetch('/api/auth/profile', {
@@ -380,11 +545,12 @@ async function loadUserProfile() {
     // Populate Profile
     document.getElementById('profileDisplayName').textContent = profile.displayName || profile.username;
     document.getElementById('profileUsername').textContent = `@${profile.username}`;
-    document.getElementById('profileBio').textContent = profile.bio || "Crafting great stories with coffee and inspiration.";
+    document.getElementById('profileBio').textContent = profile.bio || "Crafting captivating stories with coffee and imagination...";
 
-    if (profile.avatarUrl) {
-      document.getElementById('profileAvatarImg').src = profile.avatarUrl;
-    }
+    const avatarUrl = profile.avatarUrl || getPresetDataUrl(AVATAR_PRESETS[0].svg);
+    const avatarEl = document.getElementById('profileAvatarImg');
+    if (avatarEl) avatarEl.src = avatarUrl;
+    updateNavProfile(profile);
 
     // 4 Key Indicators
     document.getElementById('profileTotalWords').textContent = Number(profile.totalWordsAllProjects || 0).toLocaleString('en-US');
@@ -409,13 +575,13 @@ async function checkDatabaseStatus() {
     if (data.persistent) {
       container.innerHTML = `
         <span style="display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:12px; background:rgba(46,125,50,0.12); color:#2e7d32; font-weight:600; font-size:0.8rem; border:1px solid rgba(46,125,50,0.25);">
-          🔒 Cloud Storage: Persistent & Safe
+          Cloud Storage: Persistent & Safe
         </span>
       `;
     } else {
       container.innerHTML = `
         <span style="display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:12px; background:rgba(230,81,0,0.12); color:#e65100; font-weight:600; font-size:0.8rem; border:1px solid rgba(230,81,0,0.25); cursor:pointer;" onclick="openDbHelpModal()" title="Click to see how to save data permanently">
-          ⚠️ Temporary Storage (Data resets on restart - Click to fix)
+          Temporary Storage (Data resets on restart - Click to fix)
         </span>
       `;
     }
@@ -432,8 +598,8 @@ function openEditProfileModal() {
   const p = state.currentProfile;
   if (!p) return;
   document.getElementById('profileEditName').value = p.displayName || '';
-  document.getElementById('profileEditAvatar').value = p.avatarUrl || '';
   document.getElementById('profileEditBio').value = p.bio || '';
+  renderAvatarPicker(p.avatarUrl);
   openModal('modalEditProfile');
 }
 
@@ -497,7 +663,7 @@ function renderGoalStatsDetails(s) {
     document.getElementById('metricOriginalDaily').textContent = `Original goal: ${s.originalDailyGoal.toLocaleString('en-US')} / day`;
 
     if (s.completed) {
-      document.getElementById('metricEstDate').textContent = "Completed! 🏆";
+      document.getElementById('metricEstDate').textContent = "Completed!";
       document.getElementById('metricEstSub').textContent = "Goal 100% reached";
     } else if (s.estimatedCompletionDate) {
       const parts = s.estimatedCompletionDate.split('-');
@@ -576,7 +742,7 @@ async function loadSessionsHistory(goalId) {
     if (!tbody) return;
 
     if (sessions.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-taupe);">No writing sessions yet. Start writing today! ☕</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-taupe);">No writing sessions yet. Start writing today!</td></tr>`;
       return;
     }
 
@@ -988,7 +1154,7 @@ function toggleProjectGoalUnit() {
   document.getElementById('formEditProfile')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const displayName = document.getElementById('profileEditName').value.trim();
-    const avatarUrl = document.getElementById('profileEditAvatar').value.trim();
+    const avatarUrl = document.getElementById('profileEditAvatar')?.value.trim() || selectedAvatarUrl;
     const bio = document.getElementById('profileEditBio').value.trim();
 
     try {
@@ -1002,7 +1168,7 @@ function toggleProjectGoalUnit() {
       });
       if (res.ok) {
         closeModal('modalEditProfile');
-        loadUserProfile();
+        await loadUserProfile();
       }
     } catch (err) {
       console.error('Error updating profile:', err);

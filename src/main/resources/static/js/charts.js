@@ -188,7 +188,7 @@ function renderCharts(stats) {
                 const stat = dailyStats[context.dataIndex];
                 let label = `Written: ${context.parsed.y.toLocaleString('en-US')} words`;
                 if (stat && stat.recordDay && stat.wordsLogged > 0) {
-                  label += ' 🏆 (Best Day / Record!)';
+                  label += ' ★ (Best Day / Record!)';
                 }
                 return label;
               }
