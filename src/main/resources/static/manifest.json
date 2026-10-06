@@ -1,0 +1,22 @@
+{
+  "name": "NaNoWriMo Cozy Tracker",
+  "short_name": "NaNoWriMo",
+  "description": "App acolhedora e vintage para monitorizar projetos de escrita e metas do NaNoWriMo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E8D6C8",
+  "theme_color": "#7A3F33",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
